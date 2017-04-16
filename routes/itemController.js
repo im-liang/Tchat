@@ -23,17 +23,19 @@ module.exports = {
 							error: err
 					});
 			}
-			for (var media in req.body.media) {
-				Media.findOneAndUpdate({_id: mongoose.Types.ObjectId(media)}, {$push:{owner: result.id}}, function (error, found) {
-					if(error) {
-						res.send({
-								status: 'error',
-								error: error
-						});
-					}else if(!found) {
-						res.send({status: 'error', error: 'No media is found for adding tweet.'});
-					}
-				});
+			if(item.media) {
+				for (var media in req.body.media) {
+					Media.findOneAndUpdate({_id: mongoose.Types.ObjectId(media)}, {$push:{owner: result.id}}, function (error, found) {
+						if(error) {
+							res.send({
+									status: 'error',
+									error: error
+							});
+						}else if(!found) {
+							res.send({status: 'error', error: 'No media is found for adding tweet.'});
+						}
+					});
+				}
 			}
 			res.send({status: 'OK', id: result.id});
 		});
