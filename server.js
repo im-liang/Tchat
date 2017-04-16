@@ -44,14 +44,14 @@ app.use(express.static(__dirname + '/public'));
 const server0 = app.listen(port, function() {
   console.log('App started on port ' + port + '...');
 });
-server0.timeout = 240000; 
+server0.timeout = 240000;
 
 const server1 = app.listen(3001, function() {
-  console.log('App started on port ' + port + '...');
+  console.log('App started on port 3001 ...');
 });
 server1.timeout = 240000;
 
 const server2 = app.listen(3002, function() {
-  console.log('App started on port ' + port + '...');
+  console.log('App started on port 3002 ...');
 });
 server2.timeout = 240000;

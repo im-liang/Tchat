@@ -6,8 +6,10 @@ var User = require('./user');
 var ItemSchema = new Schema({
 	username: { type: String, ref: 'User' },
 	content: String,
-	timestamp: {type:Number, index: true}
-	// id: String
+	timestamp: {type:Number, index: true},
+	parent: String,
+	media: [{ type: Buffer}],
+	like: [{ type: ObjectId, ref: 'User' }]
 });
 
 ItemSchema.set('toJSON', {getter: true, virtuals: true});

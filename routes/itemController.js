@@ -11,7 +11,9 @@ module.exports = {
 		var item = new Item();
 		item.content = req.body.content;
 		item.username = req.session.username;
+		item.parent = req.body.parent;
 		item.timestamp = parseInt((Date.now() / 1000).toFixed(0));
+		item.media = req.body.media;
 
 		item.save(function(err, result){
 			if (err) {
@@ -57,6 +59,39 @@ module.exports = {
   		});
 	},
 	post_likeitem: function(req, res) {
-		
+		var like = req.body.like;
+		userid = req.session.userid;
+		if(like === undefined) {
+			like = true;
+		}
+		if(like) {
+			Item.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.params.id)}, {$push:{like: userid}}, function (err, found) {
+				if(err){
+					console.log(err);
+					res.send({status: 'error', error: err});
+				}
+				else if(!found){
+					console.log('No tweet is found for like.');
+					res.send({status: 'error', error: 'No tweet is found for like.'});
+				}
+				else{
+					res.send({status: 'OK'});
+				}
+			});
+		}else {
+			Item.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.params.id)}, {$pull:{like: userid}}, function (err, found) {
+				if(err){
+					console.log(err);
+					res.send({status: 'error', error: err});
+				}
+				else if(!found){
+					console.log('No entry is found for unlike.');
+					res.send({status: 'error', error: 'No entry is found for unlike.'});
+				}
+				else{
+					res.send({status: 'OK'});
+				}
+			});
+		}
 	}
 };

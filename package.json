@@ -14,15 +14,11 @@
     "connect-mongo": "^1.3.2",
     "cookie-parser": "^1.4.3",
     "ejs": "^2.5.1",
-    "elizabot": "0.0.2",
     "express": "^4.14.0",
     "express-ejs-layouts": "^2.2.0",
     "express-session": "^1.15.1",
     "mongoose": "^4.8.4",
     "node-uuid": "^1.4.7",
-    "nodemailer": "^3.1.3",
-    "nodemailer-smtp-transport": "^2.7.2",
-    "nodemon": "^1.10.2",
-    "recaptcha2": "^1.3.2"
+    "nodemon": "^1.10.2"
   }
 }
