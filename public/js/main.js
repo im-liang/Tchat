@@ -71,7 +71,8 @@ function logout() {
 
 function add_item() {
   var content = $('#item_content').val();
-  var obj = { "content": content};
+  var parent = $("#item_parent").val();
+  var obj = { "content": content, "parent": parent};
   var formData = JSON.stringify(obj);
   $.ajax({
     type: "POST",

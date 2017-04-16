@@ -49,7 +49,7 @@ module.exports = {
 				    res.send({status: 'error', error: err});
 			    }
 			    else if(!found){
-				    console.log('No entry is found for getting tweet.'});
+				    console.log('No entry is found for getting tweet.');
 				    res.send({status: 'error', error: 'No entry is found for getting tweet.'});
 			    }
 			    else{
