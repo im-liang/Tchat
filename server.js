@@ -3,6 +3,7 @@ var express        = require('express');
 var expressLayouts = require('express-ejs-layouts');
 const session	   = require('express-session');
 const MongoStore   = require('connect-mongo')(session);
+var mongodb = require('mongodb');
 var bodyParser     = require('body-parser');
 var app            = express();
 var mongoose       = require('mongoose');
@@ -28,13 +29,14 @@ var router = require('./routes/routes');
 app.use('/', router);
 
 // database
-mongoose.connect('mongodb://localhost/Robingoods');
-mongoose.Promise = global.Promise;
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-	console.log("Successfully connected to MongoDB instance...");
-  // we're connected!
+var url = 'mongodb://localhost/Robingoods';
+MongoClient.connect(url, function(err, db) {
+	if (err) {
+		console.error('MongodbClient connection ' + url + ' failed');
+		process.exit(1);
+	} else {
+  	console.log("Connected correctly to server.");
+	}
 });
 
 // set static files (css and images, etc) location
