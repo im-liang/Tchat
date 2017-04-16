@@ -49,8 +49,8 @@ module.exports = {
 				    res.send({status: 'error', error: err});
 			    }
 			    else if(!found){
-				    console.log('No entry is found.');
-				    res.send({status: 'error', error: 'No entry is found.'});
+				    console.log('No entry is found for getting tweet.'});
+				    res.send({status: 'error', error: 'No entry is found for getting tweet.'});
 			    }
 			    else{
 				    res.send({status: 'OK', item: found, media: found.media});
@@ -65,8 +65,8 @@ module.exports = {
 			    res.send({status: 'error', error: err});
 			}
 		    else if(!found){
-			    console.log('No entry is found.');
-			    res.send({status: 'error', error: 'No entry is found.'});
+			    console.log('No entry is found for deleting item.');
+			    res.send({status: 'error', error: 'No entry is found for deleting item.'});
 			}
 		    else{
 					if(found.media.length !== 0) {
