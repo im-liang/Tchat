@@ -70,7 +70,9 @@ module.exports = {
 			}
 		    else{
 					if(found.media) {
+						console.log(found.media);
 						for (var media in found.media) {
+							console.log(media);
 							Media.findOneAndRemove({_id: mongoose.Types.ObjectId(media)}, function (error, found) {
 								if(error) {
 									res.send({
