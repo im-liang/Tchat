@@ -23,7 +23,7 @@ module.exports = {
 							error: err
 					});
 			}
-			if(item.media.length !== 0) {
+			if(item.media !== undefined) {
 				for (var media in req.body.media) {
 					Media.findOneAndUpdate({_id: mongoose.Types.ObjectId(media)}, {$push:{owner: result.id}}, function (error, found) {
 						if(error) {
