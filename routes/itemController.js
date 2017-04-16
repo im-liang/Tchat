@@ -23,7 +23,7 @@ module.exports = {
 							error: err
 					});
 			}
-			if(item.media) {
+			if(item.media.length !== 0) {
 				for (var media in req.body.media) {
 					Media.findOneAndUpdate({_id: mongoose.Types.ObjectId(media)}, {$push:{owner: result.id}}, function (error, found) {
 						if(error) {
@@ -69,10 +69,8 @@ module.exports = {
 			    res.send({status: 'error', error: 'No entry is found.'});
 			}
 		    else{
-					if(found.media) {
-						console.log(found.media);
+					if(found.media.length !== 0) {
 						for (var media in found.media) {
-							console.log(media);
 							Media.findOneAndRemove({_id: mongoose.Types.ObjectId(media)}, function (error, found) {
 								if(error) {
 									res.send({
