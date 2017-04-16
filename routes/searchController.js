@@ -24,6 +24,10 @@ module.exports = {
 			following = true;
 		var q = req.body.q;
 
+		var rank = req.body.rank;
+		var parent = req.body.parent;
+		var replies = req.body.replies;
+
 		if(username) {
 			if(following) {
 				User.findOne({

@@ -1,5 +1,6 @@
 var express = require('express');
 var Item = require('../models/item');
+var Media = require('../models/media');
 var mongoose = require('mongoose');
 
 module.exports = {
@@ -22,6 +23,18 @@ module.exports = {
 							error: err
 					});
 			}
+			for (var media in req.body.media) {
+				Media.findOneAndUpdate({_id: mongoose.Types.ObjectId(media)}, {$push:{owner: result.id}}, function (error, found) {
+					if(error) {
+						res.send({
+								status: 'error',
+								error: error
+						});
+					}else if(!found) {
+						res.send({status: 'error', error: 'No media is found for adding tweet.'});
+					}
+				});
+			}
 			res.send({status: 'OK', id: result.id});
 		});
 	},
@@ -38,7 +51,7 @@ module.exports = {
 				    res.send({status: 'error', error: 'No entry is found.'});
 			    }
 			    else{
-				    res.send({status: 'OK', item: found});
+				    res.send({status: 'OK', item: found, media: found.media});
 			    }
 		    });
 	},
@@ -54,6 +67,16 @@ module.exports = {
 			    res.send({status: 'error', error: 'No entry is found.'});
 			}
 		    else{
+					for (var media in found.media) {
+						Media.findOneAndRemove({_id: mongoose.Types.ObjectId(media)}, function (error, found) {
+							if(error) {
+								res.send({
+										status: 'error',
+										error: error
+								});
+							}
+						});
+					}
 			    res.send({status: 'OK', item: found});
 			}
   		});
