@@ -1,7 +1,8 @@
 var express = require('express');
 var Item = require('../models/item');
-var Media = require('../models/media');
 var mongoose = require('mongoose');
+var cassandra = require('cassandra-driver');
+var path    = require('path');
 
 module.exports = {
 	post_additem: function(req, res){
@@ -71,13 +72,12 @@ module.exports = {
 		    else{
 					if(found.media.length !== 0) {
 						for (var media in found.media) {
-							Media.findOneAndRemove({_id: mongoose.Types.ObjectId(media)}, function (error, found) {
-								if(error) {
-									res.send({
-											status: 'error',
-											error: error
-									});
-								}
+							const query = 'DELETE FROM media.imgs(id, content) WHERE id = ?';
+						  client.execute(query, [media], function (err, result) {
+						    if(err) {
+						      res.send({status: 'error', error: err});
+						    }
+						  });
 							});
 						}
 					}

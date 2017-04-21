@@ -25,8 +25,14 @@ module.exports = {
 		var q = req.body.q;
 
 		var rank = req.body.rank;
+		if(rank === undefined)
+			rank = 'interest';
 		var parent = req.body.parent;
+		if(parent === undefined)
+			parent = 'none';
 		var replies = req.body.replies;
+		if(replies === undefined)
+			replies = true;
 
 		if(username) {
 			if(following) {
