@@ -171,3 +171,23 @@ function follow() {
     contentType : "application/json"
   });
 }
+
+function addmedia() {
+  var content = $('#media')[0].files[0];
+  var obj = {"content": content};
+  var formData = JSON.stringify(obj);
+  $.ajax({
+    type: "POST",
+    url: "/deposit",
+    data: formData,
+    enctype: 'multipart/form-data',
+    success: function(data){
+      alert("good");
+    },
+    error: function(ts) {
+      console.log(ts.responseText);
+    },
+    dataType: "json",
+    contentType : "application/json"
+  });
+}
