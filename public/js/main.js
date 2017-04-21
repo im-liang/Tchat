@@ -178,7 +178,7 @@ function addmedia() {
   var formData = JSON.stringify(obj);
   $.ajax({
     type: "POST",
-    url: "/deposit",
+    url: "/addmedia",
     data: formData,
     enctype: 'multipart/form-data',
     success: function(data){
