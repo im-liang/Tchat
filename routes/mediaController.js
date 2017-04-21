@@ -18,7 +18,7 @@ module.exports = {
 // console.log('row'+result.rows[0].contents);
 				res.setHeader('content-type', 'multipart/form-data');
 				res.writeHead(200);
-				res.write('/home/ubuntu/TwitterClone/image'+result.rows[0].contents);
+				res.write('/home/ubuntu/TwitterClone/image'+result.rows[0].content);
 				res.end();
 		// 	fs.readFile('/usr/share/nginx/html/eliza/image/'+result.rows[0].contents, function (err, data){
 		// 		if(err) {

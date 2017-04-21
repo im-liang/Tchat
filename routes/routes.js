@@ -8,7 +8,6 @@ var cassandra = require('cassandra-driver');
 var path    = require('path');
 var multer  = require('multer');
 var uuid = require('node-uuid');
-var image = multer({ dest: './image/' });
 
 var router = express.Router();
 
@@ -59,7 +58,8 @@ router.route('/follow').post(followCtrl.post_follow);
 router.route('/search').post(searchCtrl.post_search);
 
 // Routes for media
-router.post('/addmedia', image.single('content'), function(req, res) {
+var upload = multer({ dest: './image/' });
+router.post('/addmedia', upload.single('content'), function(req, res) {
   var id = uuid.v4();
   var content = req.file.filename;
 
