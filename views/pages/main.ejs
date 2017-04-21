@@ -35,12 +35,10 @@
           <button type="submit" class="btn btn-primary btn-lg">Submit</button>
         </div>
       </form>
-      <form action="javascript:addmedia();" method="POST">
+      <form method="post" enctype="multipart/form-data" action="/addmedia">
         <div class="form-group">
-          <label>Follow/Unfollow</label>
+          <label>Add Media</label>
           <input type="file" name="media" class="form-control" id="media" placeholder="media">
-        </div>
-        <div class="form-group text-right">
           <button type="submit" class="btn btn-primary btn-lg">Submit</button>
         </div>
       </form>
