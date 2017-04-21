@@ -1,4 +1,5 @@
 var express = require('express');
+var User = require('../models/user');
 var Item = require('../models/item');
 var mongoose = require('mongoose');
 var cassandra = require('cassandra-driver');
@@ -24,19 +25,15 @@ module.exports = {
 							error: err
 					});
 			}
-			if(req.body.media !== undefined) {
-				for (var media in req.body.media) {
-					Media.findOneAndUpdate({_id: mongoose.Types.ObjectId(media)}, {$push:{owner: result.id}}, function (error, found) {
-						if(error) {
-							res.send({
-									status: 'error',
-									error: error
-							});
-						}else if(!found) {
-							res.send({status: 'error', error: 'No media is found for adding tweet.'});
-						}
-					});
-				}
+			if(parent) {
+				User.findOneAndUpdate({_id: mongoose.Types.ObjectId(parent)}, {$push:{retweet: result.id}}, function (error, found) {
+					if(error) {
+						res.send({
+								status: 'error',
+								error: error
+						});
+					}
+				});
 			}
 			res.send({status: 'OK', id: result.id});
 		});
@@ -61,15 +58,15 @@ module.exports = {
 
 	delete_item: function(req, res){
 		Item.findOneAndRemove({_id: mongoose.Types.ObjectId(req.params.id)}, function (err,found){
-		    if(err){
+		  if(err){
 			    console.log(err);
 			    res.send({status: 'error', error: err});
 			}
-		    else if(!found){
+		  else if(!found){
 			    console.log('No entry is found for deleting item.');
 			    res.send({status: 'error', error: 'No entry is found for deleting item.'});
 			}
-		    else{
+		  else{
 					if(found.media.length !== 0) {
 						for (var media in found.media) {
 							const query = 'DELETE FROM media.imgs(id, content) WHERE id = ?';
@@ -78,8 +75,17 @@ module.exports = {
 						      res.send({status: 'error', error: err});
 						    }
 						  });
-							});
 						}
+					}
+					if(found.parent) {
+						User.findOneAndUpdate({_id: mongoose.Types.ObjectId(found.parent)}, {$pull:{retweet: found.id}}, function (error, found) {
+							if(error) {
+								res.send({
+										status: 'error',
+										error: error
+								});
+							}
+						});
 					}
 			    res.send({status: 'OK', item: found});
 			}
