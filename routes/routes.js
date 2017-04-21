@@ -7,6 +7,7 @@ var mediaCtrl = require('./mediaController');
 var cassandra = require('cassandra-driver');
 var path    = require('path');
 var multer  = require('multer');
+var uuid = require('node-uuid');
 var image = multer({ dest: './image/' });
 
 var router = express.Router();
