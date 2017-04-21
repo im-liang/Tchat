@@ -61,7 +61,7 @@ router.route('/search').post(searchCtrl.post_search);
 // Routes for media
 router.post('/addmedia', image.single('content'), function(req, res) {
   var id = uuid.v4();
-  var content = req.file.content;
+  var content = req.file.filename;
 
   const query = 'INSERT INTO media.imgs(id, content) VALUES (?, ?)';
   client.execute(query, [id,content], function (err, result) {
