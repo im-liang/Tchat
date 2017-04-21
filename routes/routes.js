@@ -4,6 +4,10 @@ var itemCtrl = require('./itemController');
 var followCtrl = require('./followController');
 var searchCtrl = require('./searchController');
 var mediaCtrl = require('./mediaController');
+var cassandra = require('cassandra-driver');
+var path    = require('path');
+var multer  = require('multer');
+var image = multer({ dest: './image/' });
 
 var router = express.Router();
 
@@ -15,6 +19,20 @@ router.get('/', function(req, res) {
 	} else {
 		res.render('pages/main.ejs');
 	}
+});
+
+var client = new cassandra.Client({contactPoints: ['127.0.0.1']});
+client.connect(function(err) {
+	var query;
+	query = "CREATE KEYSPACE IF NOT EXISTS media WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1' }";
+	return client.execute(query, function(e, res) {
+		return console.log(e, res);
+	});
+});
+
+const query = 'CREATE TABLE IF NOT EXISTS media.imgs(id uuid PRIMARY KEY, content blob)';
+client.execute(query, function(e,res) {
+	 return console.log(e, res);
 });
 
 // Routes for user
@@ -36,7 +54,7 @@ router.route('/follow').post(followCtrl.post_follow);
 router.route('/search').post(searchCtrl.post_search);
 
 // Routes for media
-router.route('/addmedia').post(mediaCtrl.post_addmedia);
+router.route('/addmedia').post(image.single('contents'), mediaCtrl.post_addmedia);
 router.route('/media/:id').get(mediaCtrl.get_media);
 
 // Routes for item

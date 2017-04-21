@@ -3,37 +3,50 @@ var Item = require('../models/item');
 var User = require('../models/user');
 var Media = require('../models/media');
 var mongoose = require('mongoose');
+var cassandra = require('cassandra-driver');
+var path    = require('path');
 
 module.exports = {
 	post_addmedia: function(req, res){
-		var content = req.body.content;
-		var media = new Media();
-		media.content = req.body.content;
+		var content = req.file.content;
+		var id = uuid.v4();
 
-		media.save(function(err, result){
-			if (err) {
-					res.send({
-							status: 'error',
-							error: err
-					});
+		const query = 'INSERT INTO media.imgs(id, content) VALUES (?, ?)';
+		client.execute(query, [id,content], function (err, result) {
+			if(err) {
+				res.send({
+						status: 'error',
+						error: err
+				});
+			} else {
+				res.send({status: 'OK'});
 			}
-			res.send({status: 'OK', id: result.id});
 		});
 	},
 	get_media: function(req, res){
-		Media.findOne({_id: mongoose.Types.ObjectId(req.params.id)})
-				.exec(function(err, found){
-					if(err){
-						console.log(err);
-						res.send({status: 'error', error: err});
-					}
-					else if(!found){
-						console.log('No media is found.');
-						res.send({status: 'error', error: 'No media is found.'});
-					}
-					else{
-						res.send({status: 'OK', item: found});
-					}
-				});
+		var id = req.query.id;
+		const query = 'SELECT content FROM media.imgs WHERE id = ?';
+		client.execute(query, [id], function(err, result) {
+			if(err) {
+				res.send({"status":"error"});
+			} else {
+// 		console.log(result);
+// console.log('main'+result);
+// console.log('row'+result.rows[0].contents);
+				res.setHeader('content-type', 'multipart/form-data');
+				res.setHeader('Content-Encoding', 'identity');
+				res.writeHead(200);
+				res.write('/home/ubuntu/TwitterClone/image'+result.rows[0].contents);
+				res.end();
+		// 	fs.readFile('/usr/share/nginx/html/eliza/image/'+result.rows[0].contents, function (err, data){
+		// 		if(err) {
+		// 			console.log(err);
+		// 		} else {
+		// 		 res.write(data);
+		// 		 res.end();
+		// 	 }
+		//  });
+ 			}
+		});
 	},
 };
