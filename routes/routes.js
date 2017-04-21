@@ -59,7 +59,7 @@ router.route('/search').post(searchCtrl.post_search);
 
 // Routes for media
 var upload = multer({ dest: './image/' });
-router.post('/addmedia', upload.single('content'), function(req, res) {
+router.post('/addmedia', upload.single('media'), function(req, res) {
   var id = uuid.v4();
   var content = req.file.filename;
 
