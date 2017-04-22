@@ -62,10 +62,10 @@ module.exports = {
 							query['$and'].push({content: {$not: /^RT.*/}});
 						}
 						if(rank === 'interest') {
-							query['$and'].push({ $sortByCount: {like} });
-							query['$and'].push({ $sortByCount: {retweet} });
+							query['$and'].push({ sort: {like: 'desc'} });
+							query['$and'].push({ sort: {retweet: 'desc'} });
 						}else {
-							query['$and'].push({ $sort: {timestamp: 'desc'} });
+							query['$and'].push({ sort: {timestamp: 'desc'} });
 						}
 						Item.find(query)
 								.limit(pagesize)
@@ -107,8 +107,8 @@ module.exports = {
 						query['$and'].push({content: {$not: /^RT.*/}});
 					}
 					if(rank === 'interest') {
-						query['$and'].push({ $sortByCount: {like} });
-						query['$and'].push({ $sortByCount: {retweet} });
+						query['$and'].push({ sort: {like: 'desc'} });
+						query['$and'].push({ sort: {retweet: 'desc'} });
 					}else {
 						query['$and'].push({ $sort: {timestamp: 'desc'} });
 					}
@@ -142,10 +142,10 @@ module.exports = {
 					query['$and'].push({content: {$not: /^RT.*/}});
 				}
 				if(rank === 'interest') {
-					query['$and'].push({ $sortByCount: {like} });
-					query['$and'].push({ $sortByCount: {retweet} });
+					query['$and'].push({ sort: {like: 'desc'} });
+					query['$and'].push({ sort: {retweet: 'desc'} });
 				}else {
-					query['$and'].push({ $sort: {timestamp: 'desc'} });
+					query['$and'].push({ sort: {timestamp: 'desc'} });
 				}
 				Item.find(query)
 						.limit(pagesize)
