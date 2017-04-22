@@ -40,88 +40,34 @@ module.exports = {
 						username: req.session.username,
 						following: username
 				}).lean().exec(function(err, found) {
-					if(err) return console.log(err);
-						if (found) {
-							if(q) {
-								Item.find({ "timestamp": {$lte : timestamp}, content: {$regex: q}, username: username})
-										.limit(pagesize)
-										.exec(function(error, result){
-											if(error){
-												console.log(error);
-												res.send({status: 'error', error: error});
-											}
-											else if(!result){
-												console.log('No tweets is found.');
-												res.send({status: 'error', error: 'No tweets is found.'});
-											}
-											else{
-												res.send({status: 'OK', items: result});
-											}
-										});
-							} else {
-								Item.find({ "timestamp": {$lte : timestamp}, username: username})
-										.limit(pagesize)
-										.exec(function(error, result){
-											if(error){
-												console.log(error);
-												res.send({status: 'error', error: error});
-											}
-											else if(!result){
-												console.log('No tweets is found.');
-												res.send({status: 'error', error: 'No tweets is found.'});
-											}
-											else{
-												res.send({status: 'OK', items: result});
-											}
-										});
-							}
-						} else {
-							res.send({status: 'OK', items: []});
+					if(err) {
+						res.send({
+								status: 'error',
+								error: err
+						});
+					}
+					if(found) {
+						let query = [];
+						query['$and']=[];
+						query['$and'].push({username:username});
+
+						query['$and'].push({timestamp:{$lte : timestamp}});
+						if(q) {
+							query['$and'].push({content: {$regex: q}});
 						}
-					});
-			}else {
-				if(q) {
-					Item.find({ "timestamp": {$lte : timestamp}, content: {$regex: q}, username: username})
-							.limit(pagesize)
-							.exec(function(err, result){
-								if(err){
-									console.log(err);
-									res.send({status: 'error', error: err});
-								}
-								else if(!result){
-									console.log('No tweets is found.');
-									res.send({status: 'error', error: 'No tweets is found.'});
-								}
-								else{
-									res.send({status: 'OK', items: result});
-								}
-							});
-				} else {
-					Item.find({ "timestamp": {$lte : timestamp}, username: username})
-							.limit(pagesize)
-							.exec(function(err, result){
-								if(err){
-									console.log(err);
-									res.send({status: 'error', error: err});
-								}
-								else if(!result){
-									console.log('No tweets is found.');
-									res.send({status: 'error', error: 'No tweets is found.'});
-								}
-								else{
-									res.send({status: 'OK', items: result});
-								}
-							});
-				}
-			}
-		}
-		else {
-			if(following) {
-				User.findOne({
-						username: req.session.username,
-				}).lean().exec(function(err, found) {
-					if(q) {
-						Item.find({ "timestamp": {$lte : timestamp}, content: {$regex: q}, username: {$in: found.following}})
+						if(parent !== 'none') {
+							query['$and'].push({parent: parent});
+						}
+						if(replies) {
+							query['$and'].push({content: {$not: {$regex: '/^RT.*/'}}});
+						}
+						if(rank === 'interest') {
+							query['$and'].push({ $sortByCount: {like} });
+							query['$and'].push({ $sortByCount: {retweet} });
+						}else {
+							query['$and'].push({ $sort: {timestamp,-1} });
+						}
+						Item.find(query)
 								.limit(pagesize)
 								.exec(function(err, result){
 									if(err){
@@ -137,57 +83,85 @@ module.exports = {
 									}
 								});
 					}else {
-						Item.find({ "timestamp": {$lte : timestamp}, username: {$in: found.following}})
-								.limit(pagesize)
-								.exec(function(err, result){
-									if(err){
-										console.log(err);
-										res.send({status: 'error', error: err});
-									}
-									else if(!result){
-										console.log('No tweets is found.');
-										res.send({status: 'error', error: 'No tweets is found.'});
-									}
-									else{
-										res.send({status: 'OK', items: result});
-									}
-								});
+						res.send({status: 'OK', items: []});
 					}
 				});
-			}else  {
+			}
+		}else {
+			if(following) {
+				User.findOne({
+						username: req.session.username,
+				}).lean().exec(function(err, found) {
+					let query = {};
+					query['$and']=[];
+					query['$and'].push({username: {$in: found.following}});
+
+					query['$and'].push({timestamp:{$lte : timestamp}});
+					if(q) {
+						query['$and'].push({content: {$regex: q}});
+					}
+					if(parent !== 'none') {
+						query['$and'].push({parent: parent});
+					}
+					if(replies) {
+						query['$and'].push({content: {$not: {$regex: '/^RT.*/'}}});
+					}
+					if(rank === 'interest') {
+						query['$and'].push({ $sortByCount: {like} });
+						query['$and'].push({ $sortByCount: {retweet} });
+					}else {
+						query['$and'].push({ $sort: {timestamp,-1} });
+					}
+					Item.find(query)
+							.limit(pagesize)
+							.exec(function(err, result){
+								if(err){
+									console.log(err);
+									res.send({status: 'error', error: err});
+								}
+								else if(!result){
+									console.log('No tweets is found.');
+									res.send({status: 'error', error: 'No tweets is found.'});
+								}
+								else{
+									res.send({status: 'OK', items: result});
+								}
+							});
+				});
+			}else {
+				let query = {};
+				query['$and']=[];
+				query['$and'].push({timestamp:{$lte : timestamp}});
 				if(q) {
-					Item.find({ "timestamp": {$lte : timestamp}, content: {$regex: q}})
-							.limit(pagesize)
-							.exec(function(err, result){
-								if(err){
-									console.log(err);
-									res.send({status: 'error', error: err});
-								}
-								else if(!result){
-									console.log('No tweets is found.');
-									res.send({status: 'error', error: 'No tweets is found.'});
-								}
-								else{
-									res.send({status: 'OK', items: result});
-								}
-							});
-				}else {
-					Item.find({ "timestamp": {$lte : timestamp}})
-							.limit(pagesize)
-							.exec(function(err, result){
-								if(err){
-									console.log(err);
-									res.send({status: 'error', error: err});
-								}
-								else if(!result){
-									console.log('No tweets is found.');
-									res.send({status: 'error', error: 'No tweets is found.'});
-								}
-								else{
-									res.send({status: 'OK', items: result});
-								}
-							});
+					query['$and'].push({content: {$regex: q}});
 				}
+				if(parent !== 'none') {
+					query['$and'].push({parent: parent});
+				}
+				if(replies) {
+					query['$and'].push({content: {$not: {$regex: '/^RT.*/'}}});
+				}
+				if(rank === 'interest') {
+					query['$and'].push({ $sortByCount: {like} });
+					query['$and'].push({ $sortByCount: {retweet} });
+				}else {
+					query['$and'].push({ $sort: {timestamp,-1} });
+				}
+				Item.find(query)
+						.limit(pagesize)
+						.exec(function(err, result){
+							if(err){
+								console.log(err);
+								res.send({status: 'error', error: err});
+							}
+							else if(!result){
+								console.log('No tweets is found.');
+								res.send({status: 'error', error: 'No tweets is found.'});
+							}
+							else{
+								res.send({status: 'OK', items: result});
+							}
+						});
 			}
 		}
 	}
