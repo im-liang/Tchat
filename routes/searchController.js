@@ -65,7 +65,7 @@ module.exports = {
 						if(parent !== 'none') {
 							query['$and'].push({parent: parent});
 						}
-						if(replies) {
+						if(!replies) {
 							query['$and'].push({content: {$not: /^RT.*/}});
 						}
 						if(rank === 'interest') {
@@ -105,7 +105,7 @@ module.exports = {
 				if(parent !== 'none') {
 					query['$and'].push({parent: parent});
 				}
-				if(replies) {
+				if(!replies) {
 					query['$and'].push({content: {$not: /^RT.*/}});
 				}
 				if(rank === 'interest') {
@@ -146,7 +146,7 @@ module.exports = {
 					if(parent !== 'none') {
 						query['$and'].push({parent: parent});
 					}
-					if(replies) {
+					if(!replies) {
 						query['$and'].push({content: {$not: /^RT.*/}});
 					}
 					if(rank === 'interest') {
@@ -181,7 +181,7 @@ module.exports = {
 				if(parent !== 'none') {
 					query['$and'].push({parent: parent});
 				}
-				if(replies) {
+				if(!replies) {
 					query['$and'].push({content: {$not: /^RT.*/}});
 				}
 				if(rank === 'interest') {
