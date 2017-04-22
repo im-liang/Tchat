@@ -65,7 +65,7 @@ module.exports = {
 							query['$and'].push({ $sortByCount: {like} });
 							query['$and'].push({ $sortByCount: {retweet} });
 						}else {
-							query['$and'].push({ $sort: {timestamp: -1} });
+							query['$and'].push({ $sort: {timestamp: 'desc'} });
 						}
 						Item.find(query)
 								.limit(pagesize)
@@ -110,7 +110,7 @@ module.exports = {
 						query['$and'].push({ $sortByCount: {like} });
 						query['$and'].push({ $sortByCount: {retweet} });
 					}else {
-						query['$and'].push({ $sort: {timestamp: -1} });
+						query['$and'].push({ $sort: {timestamp: 'desc'} });
 					}
 					Item.find(query)
 							.limit(pagesize)
@@ -145,7 +145,7 @@ module.exports = {
 					query['$and'].push({ $sortByCount: {like} });
 					query['$and'].push({ $sortByCount: {retweet} });
 				}else {
-					query['$and'].push({ $sort: {timestamp: -1} });
+					query['$and'].push({ $sort: {timestamp: 'desc'} });
 				}
 				Item.find(query)
 						.limit(pagesize)
