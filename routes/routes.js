@@ -43,7 +43,7 @@ var upload = multer({ dest: './image/' });
 router.post('/addmedia', upload.single('content'), function(req, res) {
 	var media = new Media();
   media.content = req.file.filename;
-	item.save(function(err, result){
+	media.save(function(err, result){
 		if (err) {
 				res.send({
 						status: 'error',
