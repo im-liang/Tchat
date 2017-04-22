@@ -37,10 +37,6 @@ module.exports = {
 		if(replies === undefined)
 			replies = true;
 
-			if(username === 'permissiblecheese' || username === 'bewilderedcrown' || username === 'scandalousaunt') {
-				console.error(req.body);
-			}
-
 		if(username) {
 			if(following) {
 				User.findOne({
@@ -106,7 +102,7 @@ module.exports = {
 					query['$and'].push({parent: parent});
 				}
 				if(!replies) {
-					query['$and'].push({content: {$not: /^RT.*/}});
+					query['$and'].push({content: {$not: /^@.*/}});
 				}
 				if(rank === 'interest') {
 					query['$and'].push({ sort: {like: 'desc'} });
