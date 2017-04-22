@@ -9,7 +9,7 @@ const MAX_ITEM_PAGESIZE = 100;
 module.exports = {
 	post_search: function(req, res){
 		console.error('search');
-		console.log(req.body);
+		// console.log(req.body);
 
 		var pagesize = Number(req.body.limit);
 		var timestamp = req.body.timestamp;
@@ -36,6 +36,10 @@ module.exports = {
 		var replies = req.body.replies;
 		if(replies === undefined)
 			replies = true;
+
+			if(username === 'permissiblecheese') {
+				console.error(req.body);
+			}
 
 		if(username) {
 			if(following) {
