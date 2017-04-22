@@ -55,9 +55,9 @@ module.exports = {
                 if (password === found.password) {
                     req.session.username = username;
                     req.session.userid = found._id;
-	                  console.log('Saved session ID ' + req.session.id);
-                    console.log('Saved user ID ' + req.session.userid);
-                    console.log('Saved username ' + req.session.username);
+	                  // console.log('Saved session ID ' + req.session.id);
+                    // console.log('Saved user ID ' + req.session.userid);
+                    // console.log('Saved username ' + req.session.username);
 		                res.send({
 		                    status: 'OK',
 		                });
