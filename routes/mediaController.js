@@ -21,7 +21,7 @@ module.exports = {
 					else{
 						res.setHeader('content-type', 'multipart/form-data');
 						res.writeHead(200);
-						res.write('/home/ubuntu/TwitterClone/image'+found.content);
+						res.write('/home/ubuntu/TwitterClone/image/'+found.content);
 						res.end();
 					}
 				});
