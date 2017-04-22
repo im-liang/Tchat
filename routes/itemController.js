@@ -26,7 +26,7 @@ module.exports = {
 					});
 			}
 			if(req.body.parent !== undefined) {
-				User.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.parent)}, {$push:{retweet: result.id}}, function (error, found) {
+				Item.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.parent)}, {$push:{retweet: result.id}}, function (error, found) {
 					if(error) {
 						res.send({
 								status: 'error',
@@ -69,16 +69,18 @@ module.exports = {
 		  else{
 					if(found.media.length !== 0) {
 						for (var media in found.media) {
-							const query = 'DELETE FROM media.imgs(id, content) WHERE id = ?';
-						  client.execute(query, [media], function (err, result) {
-						    if(err) {
-						      res.send({status: 'error', error: err});
-						    }
-						  });
+							Media.findOneAndRemove({_id: mongoose.Types.ObjectId(media)}, function (error, result) {
+								if(error) {
+									res.send({
+											status: 'error',
+											error: error
+									});
+								}
+							});
 						}
 					}
 					if(found.parent) {
-						User.findOneAndUpdate({_id: mongoose.Types.ObjectId(found.parent)}, {$pull:{retweet: found.id}}, function (error, found) {
+						User.findOneAndUpdate({_id: mongoose.Types.ObjectId(found.parent)}, {$pull:{retweet: found.id}}, function (error, result) {
 							if(error) {
 								res.send({
 										status: 'error',
