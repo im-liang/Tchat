@@ -8,6 +8,9 @@ const MAX_ITEM_PAGESIZE = 100;
 
 module.exports = {
 	post_search: function(req, res){
+		console.error('search');
+		console.log(req.body);
+
 		var pagesize = Number(req.body.limit);
 		var timestamp = req.body.timestamp;
 		if(isNaN(pagesize) || pagesize <= 0)

@@ -7,6 +7,7 @@ var path    = require('path');
 
 module.exports = {
 	get_media: function(req, res){
+		console.error('get media');
 		Media.findOne({_id: mongoose.Types.ObjectId(req.params.id)})
 				.exec(function(err, found){
 					if(err){
