@@ -59,7 +59,7 @@ module.exports = {
 							query['$and'].push({parent: parent});
 						}
 						if(replies) {
-							query['$and'].push({content: {$not: {$regex: '/^RT.*/'}}});
+							query['$and'].push({content: {$not: '/^RT.*/'}});
 						}
 						if(rank === 'interest') {
 							query['$and'].push({ $sortByCount: {like} });
@@ -104,7 +104,7 @@ module.exports = {
 						query['$and'].push({parent: parent});
 					}
 					if(replies) {
-						query['$and'].push({content: {$not: {$regex: '/^RT.*/'}}});
+						query['$and'].push({content: {$not: '/^RT.*/'}});
 					}
 					if(rank === 'interest') {
 						query['$and'].push({ $sortByCount: {like} });
@@ -139,7 +139,7 @@ module.exports = {
 					query['$and'].push({parent: parent});
 				}
 				if(replies) {
-					query['$and'].push({content: {$not: {$regex: '/^RT.*/'}}});
+					query['$and'].push({content: {$not: '/^RT.*/'}});
 				}
 				if(rank === 'interest') {
 					query['$and'].push({ $sortByCount: {like} });
