@@ -7,7 +7,6 @@ var searchCtrl = require('./searchController');
 var mediaCtrl = require('./mediaController');
 var path    = require('path');
 var multer  = require('multer');
-var uuid = require('node-uuid');
 
 var router = express.Router();
 

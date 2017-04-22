@@ -3,7 +3,6 @@ var Item = require('../models/item');
 var User = require('../models/user');
 var Media = require('../models/media');
 var mongoose = require('mongoose');
-var cassandra = require('cassandra-driver');
 var path    = require('path');
 
 module.exports = {
