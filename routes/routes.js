@@ -68,7 +68,7 @@ router.post('/addmedia', upload.single('content'), function(req, res) {
     if(err) {
       res.send({status: 'error', error: err});
     } else {
-      res.send({status:"OK"});
+      res.send({status:"OK", id: id});
     }
   });
 });
