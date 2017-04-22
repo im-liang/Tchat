@@ -25,8 +25,8 @@ module.exports = {
 							error: err
 					});
 			}
-			if(parent !== undefined) {
-				User.findOneAndUpdate({_id: mongoose.Types.ObjectId(parent)}, {$push:{retweet: result.id}}, function (error, found) {
+			if(req.body.parent !== undefined) {
+				User.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.parent)}, {$push:{retweet: result.id}}, function (error, found) {
 					if(error) {
 						res.send({
 								status: 'error',
