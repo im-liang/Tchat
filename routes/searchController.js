@@ -89,6 +89,42 @@ module.exports = {
 						res.send({status: 'OK', items: []});
 					}
 				});
+			}else {
+				let query = [];
+				query['$and']=[];
+				query['$and'].push({username:username});
+
+				query['$and'].push({timestamp:{$lte : timestamp}});
+				if(q) {
+					query['$and'].push({content: {$regex: q}});
+				}
+				if(parent !== 'none') {
+					query['$and'].push({parent: parent});
+				}
+				if(replies) {
+					query['$and'].push({content: {$not: /^RT.*/}});
+				}
+				if(rank === 'interest') {
+					query['$and'].push({ sort: {like: 'desc'} });
+					query['$and'].push({ sort: {retweet: 'desc'} });
+				}else {
+					query['$and'].push({ sort: {timestamp: 'desc'} });
+				}
+				Item.find(query)
+						.limit(pagesize)
+						.exec(function(err, result){
+							if(err){
+								console.log(err);
+								res.send({status: 'error', error: err});
+							}
+							else if(!result){
+								console.log('No tweets is found.');
+								res.send({status: 'error', error: 'No tweets is found.'});
+							}
+							else{
+								res.send({status: 'OK', items: result});
+							}
+						});
 			}
 		}else {
 			if(following) {
