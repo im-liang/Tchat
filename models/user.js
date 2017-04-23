@@ -1,5 +1,4 @@
 var mongoose = require("mongoose");
-var ObjectId = mongoose.Schema.Types.ObjectId;
 
 var User_Schema = new mongoose.Schema({
   username: {type: String, index: {unique: true, dropDups: true}},

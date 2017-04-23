@@ -3,7 +3,6 @@ var User = require('../models/user');
 var Item = require('../models/item');
 var Media = require('../models/media');
 var mongoose = require('mongoose');
-var cassandra = require('cassandra-driver');
 var path    = require('path');
 
 module.exports = {
@@ -70,7 +69,7 @@ module.exports = {
 			    res.send({status: 'error', error: 'No entry is found for deleting item.'});
 			}
 		  else{
-					if(found.media.length !== 0) {
+					if(found.media) {
 						Media.findOneAndRemove({_id: {$in: mongoose.Types.ObjectId(found.media)}}, function (error, result) {
 							if(error) {
 								res.send({
