@@ -41,8 +41,6 @@ router.route('/search').post(searchCtrl.post_search);
 // Routes for media
 var upload = multer({ dest: './image/' });
 router.post('/addmedia', upload.single('content'), function(req, res) {
-	// console.error('add media');
-
 	var media = new Media();
   media.content = req.file.filename;
 	media.save(function(err, result){
@@ -54,7 +52,6 @@ router.post('/addmedia', upload.single('content'), function(req, res) {
 		}
 		res.send({status: 'OK', id: result.id});
 	});
-
 });
 router.route('/media/:id').get(mediaCtrl.get_media);
 

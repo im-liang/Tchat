@@ -22,9 +22,9 @@ module.exports = {
 					else{
 						res.setHeader('content-type', 'multipart/form-data');
 						res.writeHead(200);
-						fs.readFile('/home/ubuntu/TwitterClone/image/'+found.content, function (err, data){
+						fs.readFile('/home/ubuntu/TwitterClone/image/'+found.content, function (error, data){
 							if(err) {
-								console.log(err);
+								res.send({status: 'error', error: error});
 							} else {
 	 							res.write(data);
 	 							res.end();
