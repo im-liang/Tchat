@@ -48,19 +48,18 @@ module.exports = {
 						});
 					}
 					if(found) {
-						let query = {$push: {}};
-						query.$push({username:username});
-
-						query.$push({timestamp:{$lte : timestamp}});
+						let query = {};
 						if(q && !replies) {
-							query.$push({$and : [{content:{$regex: q}}, {content: {$not: /^RT.*/}}]});
+							query = {$and : [{content:{$regex: q}}, {content: {$not: /^RT.*/}}]};
 						}else if(q) {
-							query.$push({content: {$regex: q}});
+							query = {content: {$regex: q}};
 						}else if(!replies) {
-							query.$push({content: {$not: /^RT.*/}});
+							query = {content: {$not: /^RT.*/}};
 						}
+						query[username] = username;
+						query[timestamp] = {$lte : timestamp};
 						if(parent !== 'none') {
-							query.$push({parent: parent});
+							query[parent] = parent;
 						}
 						if(rank === 'interest') {
 							Item.find(query)
@@ -104,19 +103,18 @@ module.exports = {
 					}
 				});
 			}else {
-				let query = {$push: {}};
-				query.$push({username:username});
-
-				query.$push({timestamp:{$lte : timestamp}});
+				let query = {};
 				if(q && !replies) {
-					query.$push({$and : [{content:{$regex: q}}, {content: {$not: /^RT.*/}}]});
+					query = {$and : [{content:{$regex: q}}, {content: {$not: /^RT.*/}}]};
 				}else if(q) {
-					query.$push({content: {$regex: q}});
+					query = {content: {$regex: q}};
 				}else if(!replies) {
-					query.$push({content: {$not: /^RT.*/}});
+					query = {content: {$not: /^RT.*/}};
 				}
+				query[username] = username;
+				query[timestamp] = {$lte : timestamp};
 				if(parent !== 'none') {
-					query.$push({parent: parent});
+					query[parent] = parent;
 				}
 				if(rank === 'interest') {
 					Item.find(query)
@@ -161,19 +159,18 @@ module.exports = {
 				User.findOne({
 						username: req.session.username,
 				}).lean().exec(function(err, found) {
-					let query = {$push: {}};
-					query.$push({username:{$in: found.following}});
-
-					query.$push({timestamp:{$lte : timestamp}});
+					let query = {};
 					if(q && !replies) {
-						query.$push({$and : [{content:{$regex: q}}, {content: {$not: /^RT.*/}}]});
+						query = {$and : [{content:{$regex: q}}, {content: {$not: /^RT.*/}}]};
 					}else if(q) {
-						query.$push({content: {$regex: q}});
+						query = {content: {$regex: q}};
 					}else if(!replies) {
-						query.$push({content: {$not: /^RT.*/}});
+						query = {content: {$not: /^RT.*/}};
 					}
+					query[username] = {$in: found.following};
+					query[timestamp] = {$lte : timestamp};
 					if(parent !== 'none') {
-						query.$push({parent: parent});
+						query[parent] = parent;
 					}
 					if(rank === 'interest') {
 						Item.find(query)
@@ -214,17 +211,17 @@ module.exports = {
 					}
 				});
 			}else {
-				let query = {$push: {}};
-				query.$push({timestamp:{$lte : timestamp}});
+				let query = {};
 				if(q && !replies) {
-					query.$push({$and : [{content:{$regex: q}}, {content: {$not: /^RT.*/}}]});
+					query = {$and : [{content:{$regex: q}}, {content: {$not: /^RT.*/}}]};
 				}else if(q) {
-					query.$push({content: {$regex: q}});
+					query = {content: {$regex: q}};
 				}else if(!replies) {
-					query.$push({content: {$not: /^RT.*/}});
+					query = {content: {$not: /^RT.*/}};
 				}
+				query[timestamp] = {$lte : timestamp};
 				if(parent !== 'none') {
-					query.$push({parent: parent});
+					query[parent] = parent;
 				}
 				if(rank === 'interest') {
 					Item.find(query)
