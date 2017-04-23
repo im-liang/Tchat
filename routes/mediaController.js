@@ -21,6 +21,7 @@ module.exports = {
 					}
 					else{
 						res.setHeader('content-type', 'multipart/form-data');
+						res.setHeader('Content-Encoding', 'identity');
 						res.writeHead(200);
 						fs.readFile('/home/ubuntu/TwitterClone/image/'+found.content, function (error, data){
 							if(err) {
