@@ -52,14 +52,14 @@ module.exports = {
 						if(q && !replies) {
 							query = {$and : [{content:{$regex: q}}, {content: {$not: /^RT.*/}}]};
 						}else if(q) {
-							query[content] = {$regex: q};
+							query['content'] = {$regex: q};
 						}else if(!replies) {
-							query[content] = {$not: /^RT.*/};
+							query['content'] = {$not: /^RT.*/};
 						}
-						query[username] = username;
-						query[timestamp] = {$lte : timestamp};
+						query['username'] = username;
+						query['timestamp'] = {$lte : timestamp};
 						if(parent !== 'none') {
-							query[parent] = parent;
+							query['parent'] = parent;
 						}
 						if(rank === 'interest') {
 							Item.find(query)
@@ -109,14 +109,14 @@ module.exports = {
 				if(q && !replies) {
 					query = {$and : [{content:{$regex: q}}, {content: {$not: /^RT.*/}}]};
 				}else if(q) {
-					query[content] = {$regex: q};
+					query['content'] = {$regex: q};
 				}else if(!replies) {
-					query[content] = {$not: /^RT.*/};
+					query['content'] = {$not: /^RT.*/};
 				}
-				query[username] = username;
-				query[timestamp] = {$lte : timestamp};
+				query['username'] = username;
+				query['timestamp'] = {$lte : timestamp};
 				if(parent !== 'none') {
-					query[parent] = parent;
+					query['parent'] = parent;
 				}
 				if(rank === 'interest') {
 					Item.find(query)
@@ -167,12 +167,12 @@ module.exports = {
 					if(q && !replies) {
 						query = {$and : [{content:{$regex: q}}, {content: {$not: /^RT.*/}}]};
 					}else if(q) {
-						query[content] = {$regex: q};
+						query['content'] = {$regex: q};
 					}else if(!replies) {
-						query[content] = {$not: /^RT.*/};
+						query['content'] = {$not: /^RT.*/};
 					}
-					query[username] = {$in: found.following};
-					query[timestamp] = {$lte : timestamp};
+					query['username'] = {$in: found.following};
+					query['timestamp'] = {$lte : timestamp};
 					if(parent !== 'none') {
 						query[parent] = parent;
 					}
@@ -221,13 +221,13 @@ module.exports = {
 				if(q && !replies) {
 					query = {$and : [{content:{$regex: q}}, {content: {$not: /^RT.*/}}]};
 				}else if(q) {
-					query[content] = {$regex: q};
+					query['content'] = {$regex: q};
 				}else if(!replies) {
-					query[content] = {$not: /^RT.*/};
+					query['content'] = {$not: /^RT.*/};
 				}
-				query[timestamp] = {$lte : timestamp};
+				query['timestamp'] = {$lte : timestamp};
 				if(parent !== 'none') {
-					query[parent] = parent;
+					query['parent'] = parent;
 				}
 				if(rank === 'interest') {
 					Item.find(query)
