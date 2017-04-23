@@ -8,7 +8,7 @@ var ItemSchema = new mongoose.Schema({
 	content: String,
 	timestamp: {type:Number, index: true},
 	parent: { type: ObjectId },
-	media: [{type: ObjectId, ref: 'Media'}],
+	media: [String],
 	like: [{ type: ObjectId, ref: 'User', index: {unique: true, dropDups: true}}],
 	retweet: [{ type: ObjectId, index: {unique: true, dropDups: true} }]
 });

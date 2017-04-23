@@ -8,7 +8,7 @@ const fs = require('fs');
 
 module.exports = {
 	get_media: function(req, res){
-		Media.findOne({_id: mongoose.Types.ObjectId(req.params.id)})
+		Media.findOne({uid: req.params.id})
 				.exec(function(err, found){
 					if(err){
 						console.log(err);

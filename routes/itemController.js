@@ -72,24 +72,13 @@ module.exports = {
 			}
 		  else{
 					if(found.media) {
-						// Media.findOneAndRemove({_id: {$in: mongoose.Types.ObjectId(found.media)}}, function (error, result) {
-						// 	if(error) {
-						// 		res.send({
-						// 				status: 'error',
-						// 				error: error
-						// 		});
-						// 	}
-						// });
-						MongoClient.connect('mongodb://localhost/Robingoods', function(err, db) {
-  						var col = db.collection('media');
-							col.findOneAndRemove({_id: {$in: new mongo.ObjectID(found.media)}}, function (error, result) {
-								if(error) {
-									res.send({
-											status: 'error',
-											error: error
-									});
-								}
-							});
+						Media.findOneAndRemove({uid: {$in: found.media}}, function (error, result) {
+							if(error) {
+								res.send({
+										status: 'error',
+										error: error
+								});
+							}
 						});
 					}
 					if(found.parent) {

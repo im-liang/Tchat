@@ -7,6 +7,7 @@ var searchCtrl = require('./searchController');
 var mediaCtrl = require('./mediaController');
 var path    = require('path');
 var multer  = require('multer');
+var uuid = require('node-uuid');
 
 var router = express.Router();
 
@@ -41,8 +42,10 @@ router.route('/search').post(searchCtrl.post_search);
 // Routes for media
 var upload = multer({ dest: './image/' });
 router.post('/addmedia', upload.single('content'), function(req, res) {
+	var id = uuid.v4();
 	var media = new Media();
   media.content = req.file.filename;
+	media.uid = id;
 	media.save(function(err, result){
 		if (err) {
 				res.send({
@@ -50,7 +53,7 @@ router.post('/addmedia', upload.single('content'), function(req, res) {
 						error: err
 				});
 		}
-		res.send({status: 'OK', id: result.id});
+		res.send({status: 'OK', id: id});
 	});
 });
 router.route('/media/:id').get(mediaCtrl.get_media);
