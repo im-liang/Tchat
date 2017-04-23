@@ -71,16 +71,14 @@ module.exports = {
 			}
 		  else{
 					if(found.media.length !== 0) {
-						for (var media in found.media) {
-							Media.findOneAndRemove({_id: mongoose.Types.ObjectId(media)}, function (error, result) {
-								if(error) {
-									res.send({
-											status: 'error',
-											error: error
-									});
-								}
-							});
-						}
+						Media.findOneAndRemove({_id: {$in: mongoose.Types.ObjectId(found.media)}}, function (error, result) {
+							if(error) {
+								res.send({
+										status: 'error',
+										error: error
+								});
+							}
+						});
 					}
 					if(found.parent) {
 						Item.findOneAndUpdate({_id: mongoose.Types.ObjectId(found.parent)}, {$pull:{retweet: found.id}}, function (error, result) {
