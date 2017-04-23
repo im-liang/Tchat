@@ -76,7 +76,7 @@ module.exports = {
 										}
 										else{
 											console.log(query);
-											console.log(result);
+											
 											res.send({status: 'OK', items: result});
 										}
 									});
@@ -95,7 +95,7 @@ module.exports = {
 										}
 										else{
 											console.log(query);
-											console.log(result);
+
 											res.send({status: 'OK', items: result});
 										}
 									});
@@ -133,7 +133,7 @@ module.exports = {
 								}
 								else{
 									console.log(query);
-									console.log(result);
+
 									res.send({status: 'OK', items: result});
 								}
 							});
@@ -152,7 +152,7 @@ module.exports = {
 								}
 								else{
 									console.log(query);
-									console.log(result);
+
 									res.send({status: 'OK', items: result});
 								}
 							});
@@ -191,7 +191,7 @@ module.exports = {
 									}
 									else{
 										console.log(query);
-										console.log(result);
+
 										res.send({status: 'OK', items: result});
 									}
 								});
@@ -210,7 +210,7 @@ module.exports = {
 									}
 									else{
 										console.log(query);
-										console.log(result);
+
 										res.send({status: 'OK', items: result});
 									}
 								});
@@ -244,7 +244,7 @@ module.exports = {
 								}
 								else{
 									console.log(query);
-									console.log(result);
+
 									res.send({status: 'OK', items: result});
 								}
 							});
@@ -263,7 +263,6 @@ module.exports = {
 								}
 								else{
 									console.log(query);
-									console.log(result);
 									res.send({status: 'OK', items: result});
 								}
 							});

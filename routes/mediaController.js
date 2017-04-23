@@ -4,6 +4,7 @@ var User = require('../models/user');
 var Media = require('../models/media');
 var mongoose = require('mongoose');
 var path    = require('path');
+const fs = require('fs');
 
 module.exports = {
 	get_media: function(req, res){
@@ -21,8 +22,14 @@ module.exports = {
 					else{
 						res.setHeader('content-type', 'multipart/form-data');
 						res.writeHead(200);
-						res.write('/home/ubuntu/TwitterClone/image/'+found.content);
-						res.end();
+						fs.readFile('/home/ubuntu/TwitterClone/image/'+found.content, function (err, data){
+							if(err) {
+								console.log(err);
+							} else {
+	 							res.write(data);
+	 							res.end();
+							}
+						});
 					}
 				});
 	}
