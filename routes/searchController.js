@@ -63,7 +63,7 @@ module.exports = {
 						}
 						if(rank === 'interest') {
 							Item.find(query)
-									.sort({like: -1, retweet: -1})
+									.sort({retweet: -1})
 									.limit(pagesize)
 									.exec(function(err, result){
 										if(err){
@@ -120,7 +120,7 @@ module.exports = {
 				}
 				if(rank === 'interest') {
 					Item.find(query)
-							.sort({like: -1, retweet: -1})
+							.sort({retweet: -1})
 							.limit(pagesize)
 							.exec(function(err, result){
 								if(err){
@@ -178,7 +178,7 @@ module.exports = {
 					}
 					if(rank === 'interest') {
 						Item.find(query)
-								.sort({like: -1, retweet: -1})
+								.sort({retweet: -1})
 								.limit(pagesize)
 								.exec(function(err, result){
 									if(err){
@@ -231,7 +231,7 @@ module.exports = {
 				}
 				if(rank === 'interest') {
 					Item.find(query)
-							.sort({like: -1, retweet: -1})
+							.sort({retweet: -1})
 							.limit(pagesize)
 							.exec(function(err, result){
 								if(err){
