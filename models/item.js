@@ -9,7 +9,7 @@ var ItemSchema = new Schema({
 	content: String,
 	timestamp: {type:Number, index: true},
 	parent: { type: ObjectId },
-	media: [type: ObjectId, ref: 'Media'],
+	media: [{type: ObjectId, ref: 'Media'}],
 	like: [{ type: ObjectId, ref: 'User', index: {unique: true, dropDups: true}}],
 	retweet: [{ type: ObjectId, index: {unique: true, dropDups: true} }]
 });
