@@ -52,9 +52,9 @@ module.exports = {
 						if(q && !replies) {
 							query = {$and : [{content:{$regex: q}}, {content: {$not: /^RT.*/}}]};
 						}else if(q) {
-							query = {content: {$regex: q}};
+							query[content] = {$regex: q};
 						}else if(!replies) {
-							query = {content: {$not: /^RT.*/}};
+							query[content] = {$not: /^RT.*/};
 						}
 						query[username] = username;
 						query[timestamp] = {$lte : timestamp};
@@ -75,6 +75,7 @@ module.exports = {
 											res.send({status: 'error', error: 'No tweets is found.'});
 										}
 										else{
+											console.log(query);
 											console.log(result);
 											res.send({status: 'OK', items: result});
 										}
@@ -93,6 +94,7 @@ module.exports = {
 											res.send({status: 'error', error: 'No tweets is found.'});
 										}
 										else{
+											console.log(query);
 											console.log(result);
 											res.send({status: 'OK', items: result});
 										}
@@ -107,9 +109,9 @@ module.exports = {
 				if(q && !replies) {
 					query = {$and : [{content:{$regex: q}}, {content: {$not: /^RT.*/}}]};
 				}else if(q) {
-					query = {content: {$regex: q}};
+					query[content] = {$regex: q};
 				}else if(!replies) {
-					query = {content: {$not: /^RT.*/}};
+					query[content] = {$not: /^RT.*/};
 				}
 				query[username] = username;
 				query[timestamp] = {$lte : timestamp};
@@ -130,6 +132,7 @@ module.exports = {
 									res.send({status: 'error', error: 'No tweets is found.'});
 								}
 								else{
+									console.log(query);
 									console.log(result);
 									res.send({status: 'OK', items: result});
 								}
@@ -148,6 +151,7 @@ module.exports = {
 									res.send({status: 'error', error: 'No tweets is found.'});
 								}
 								else{
+									console.log(query);
 									console.log(result);
 									res.send({status: 'OK', items: result});
 								}
@@ -163,9 +167,9 @@ module.exports = {
 					if(q && !replies) {
 						query = {$and : [{content:{$regex: q}}, {content: {$not: /^RT.*/}}]};
 					}else if(q) {
-						query = {content: {$regex: q}};
+						query[content] = {$regex: q};
 					}else if(!replies) {
-						query = {content: {$not: /^RT.*/}};
+						query[content] = {$not: /^RT.*/};
 					}
 					query[username] = {$in: found.following};
 					query[timestamp] = {$lte : timestamp};
@@ -186,6 +190,7 @@ module.exports = {
 										res.send({status: 'error', error: 'No tweets is found.'});
 									}
 									else{
+										console.log(query);
 										console.log(result);
 										res.send({status: 'OK', items: result});
 									}
@@ -204,6 +209,7 @@ module.exports = {
 										res.send({status: 'error', error: 'No tweets is found.'});
 									}
 									else{
+										console.log(query);
 										console.log(result);
 										res.send({status: 'OK', items: result});
 									}
@@ -215,9 +221,9 @@ module.exports = {
 				if(q && !replies) {
 					query = {$and : [{content:{$regex: q}}, {content: {$not: /^RT.*/}}]};
 				}else if(q) {
-					query = {content: {$regex: q}};
+					query[content] = {$regex: q};
 				}else if(!replies) {
-					query = {content: {$not: /^RT.*/}};
+					query[content] = {$not: /^RT.*/};
 				}
 				query[timestamp] = {$lte : timestamp};
 				if(parent !== 'none') {
@@ -237,6 +243,7 @@ module.exports = {
 									res.send({status: 'error', error: 'No tweets is found.'});
 								}
 								else{
+									console.log(query);
 									console.log(result);
 									res.send({status: 'OK', items: result});
 								}
@@ -255,6 +262,7 @@ module.exports = {
 									res.send({status: 'error', error: 'No tweets is found.'});
 								}
 								else{
+									console.log(query);
 									console.log(result);
 									res.send({status: 'OK', items: result});
 								}
