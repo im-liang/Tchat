@@ -20,7 +20,7 @@ module.exports = {
 						res.send({status: 'error', error: 'No entry is found for getting media.'});
 					}
 					else{
-						res.setHeader('content-type', 'multipart/form-data');
+						res.setHeader('content-type', 'image/png');
 						res.setHeader('Content-Encoding', 'identity');
 						res.writeHead(200);
 						fs.readFile('/home/ubuntu/TwitterClone/image/'+found.content, function (error, data){
