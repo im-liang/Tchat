@@ -33,9 +33,11 @@ module.exports = {
 								error: error
 						});
 					}
+					res.send({status: 'OK', id: result.id});
 				});
+			}else {
+				res.send({status: 'OK', id: result.id});
 			}
-			res.send({status: 'OK', id: result.id});
 		});
 	},
 

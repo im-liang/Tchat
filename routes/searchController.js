@@ -9,7 +9,7 @@ const MAX_ITEM_PAGESIZE = 100;
 module.exports = {
 	post_search: function(req, res){
 		// console.error('search');
-		console.log(req.body);
+		// console.log(req.body);
 
 		var pagesize = Number(req.body.limit);
 		var timestamp = req.body.timestamp;
@@ -102,7 +102,7 @@ module.exports = {
 					query['$and'].push({parent: parent});
 				}
 				if(!replies) {
-					query['$and'].push({content: {$not: /^@.*/}});
+					query['$and'].push({content: {$not: /^RT.*/}});
 				}
 				if(rank === 'interest') {
 					query['$and'].push({ sort: {like: 'desc'} });
@@ -122,6 +122,7 @@ module.exports = {
 								res.send({status: 'error', error: 'No tweets is found.'});
 							}
 							else{
+								console.log(result);
 								res.send({status: 'OK', items: result});
 							}
 						});
