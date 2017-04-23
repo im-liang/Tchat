@@ -50,7 +50,7 @@ module.exports = {
 						});
 					}
 					if(found) {
-						let query = [];
+						let query = {};
 						query['$and']=[];
 						query['$and'].push({username:username});
 
@@ -90,7 +90,7 @@ module.exports = {
 					}
 				});
 			}else {
-				let query = [];
+				let query = {};
 				query['$and']=[];
 				query['$and'].push({username:username});
 
