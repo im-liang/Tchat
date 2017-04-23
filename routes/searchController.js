@@ -73,14 +73,15 @@ module.exports = {
 						let query = {};
 						query.username = username;
 						query.timestamp = {$lte: timestamp};
-						if(q) {
+						if(q && !replies) {
+							query.content = {$and : [{$regex: q}, {$not: /^RT.*/}]}
+						}else if(q) {
 							query.content = {$regex: q};
+						}else if(!replies) {
+							query.content = {$not: /^RT.*/};
 						}
 						if(parent !== 'none') {
 							query.parent = parent;
-						}
-						if(!replies) {
-							query.content = {$not: /^RT.*/};
 						}
 						if(rank === 'interest') {
 							Item.find(query)
@@ -159,14 +160,15 @@ module.exports = {
 				let query = {};
 				query.username = username;
 				query.timestamp = {$lte: timestamp};
-				if(q) {
+				if(q && !replies) {
+					query.content = {$and : [{$regex: q}, {$not: /^RT.*/}]}
+				}else if(q) {
 					query.content = {$regex: q};
+				}else if(!replies) {
+					query.content = {$not: /^RT.*/};
 				}
 				if(parent !== 'none') {
 					query.parent = parent;
-				}
-				if(!replies) {
-					query.content = {$not: /^RT.*/};
 				}
 				if(rank === 'interest') {
 					Item.find(query)
@@ -247,14 +249,15 @@ module.exports = {
 					let query = {};
 					query.username = {$in: found.following};
 					query.timestamp = {$lte: timestamp};
-					if(q) {
+					if(q && !replies) {
+						query.content = {$and : [{$regex: q}, {$not: /^RT.*/}]}
+					}else if(q) {
 						query.content = {$regex: q};
+					}else if(!replies) {
+						query.content = {$not: /^RT.*/};
 					}
 					if(parent !== 'none') {
 						query.parent = parent;
-					}
-					if(!replies) {
-						query.content = {$not: /^RT.*/};
 					}
 					if(rank === 'interest') {
 						Item.find(query)
@@ -328,14 +331,15 @@ module.exports = {
 				// 		});
 				let query = {};
 				query.timestamp = {$lte: timestamp};
-				if(q) {
+				if(q && !replies) {
+					query.content = {$and : [{$regex: q}, {$not: /^RT.*/}]}
+				}else if(q) {
 					query.content = {$regex: q};
+				}else if(!replies) {
+					query.content = {$not: /^RT.*/};
 				}
 				if(parent !== 'none') {
 					query.parent = parent;
-				}
-				if(!replies) {
-					query.content = {$not: /^RT.*/};
 				}
 				if(rank === 'interest') {
 					Item.find(query)
