@@ -9,8 +9,8 @@ var ItemSchema = new Schema({
 	timestamp: {type:Number, index: true},
 	parent: { type: ObjectId },
 	media: [String],
-	like: [{ type: ObjectId, ref: 'User' }],
-	retweet: [{ type: ObjectId, ref: 'User' }]
+	like: [{ type: ObjectId, ref: 'User' }, index: {unique: true, dropDups: true}],
+	retweet: [{ type: ObjectId, ref: 'Item' }, index: {unique: true, dropDups: true}]
 });
 
 ItemSchema.set('toJSON', {getter: true, virtuals: true});
