@@ -4,6 +4,8 @@ var Item = require('../models/item');
 var Media = require('../models/media');
 var mongoose = require('mongoose');
 var path    = require('path');
+var MongoClient = require('mongodb').MongoClient;
+var mongo = require('mongodb');
 
 module.exports = {
 	post_additem: function(req, res){
@@ -70,13 +72,24 @@ module.exports = {
 			}
 		  else{
 					if(found.media) {
-						Media.findOneAndRemove({_id: {$in: mongoose.Types.ObjectId(found.media)}}, function (error, result) {
-							if(error) {
-								res.send({
-										status: 'error',
-										error: error
-								});
-							}
+						// Media.findOneAndRemove({_id: {$in: mongoose.Types.ObjectId(found.media)}}, function (error, result) {
+						// 	if(error) {
+						// 		res.send({
+						// 				status: 'error',
+						// 				error: error
+						// 		});
+						// 	}
+						// });
+						MongoClient.connect('mongodb://localhost/Robingoods', function(err, db) {
+  						var col = db.collection('media');
+							col.findOneAndRemove({_id: {$in: new mongo.ObjectID(found.media)}}, function (error, result) {
+								if(error) {
+									res.send({
+											status: 'error',
+											error: error
+									});
+								}
+							});
 						});
 					}
 					if(found.parent) {
