@@ -50,27 +50,215 @@ module.exports = {
 						});
 					}
 					if(found) {
-						let query = { $and: [] };
-						query['$and']=[];
-						query.$and.push({username:username});
-
-						query.$and.push({timestamp:{$lte : timestamp}});
+						// let query = { $and: [] };
+						// query['$and']=[];
+						// query.$and.push({username:username});
+						//
+						// query.$and.push({timestamp:{$lte : timestamp}});
+						// if(q) {
+						// 	query.$and.push({content: {$regex: q}});
+						// }
+						// if(parent !== 'none') {
+						// 	query.$and.push({parent: parent});
+						// }
+						// if(!replies) {
+						// 	query.$and.push({content: {$not: /^RT.*/}});
+						// }
+						// if(rank === 'interest') {
+						// 	query.$and.push({ sort: {like: 'desc'} });
+						// 	query.$and.push({ sort: {retweet: 'desc'} });
+						// }else {
+						// 	query.$and.push({ sort: {timestamp: 'desc'} });
+						// }
+						let query = {};
+						query.username = username;
+						query.timestamp = {$lte: timestamp};
 						if(q) {
-							query.$and.push({content: {$regex: q}});
+							query.content = {$regex: q};
 						}
 						if(parent !== 'none') {
-							query.$and.push({parent: parent});
+							query.parent = parent;
 						}
 						if(!replies) {
-							query.$and.push({content: {$not: /^RT.*/}});
+							query.content = {$not: /^RT.*/};
 						}
 						if(rank === 'interest') {
-							query.$and.push({ sort: {like: 'desc'} });
-							query.$and.push({ sort: {retweet: 'desc'} });
+							Item.find(query)
+									.sort({like: -1, retweet: -1})
+									.limit(pagesize)
+									.exec(function(err, result){
+										if(err){
+											console.log(err);
+											res.send({status: 'error', error: err});
+										}
+										else if(!result){
+											console.log('No tweets is found.');
+											res.send({status: 'error', error: 'No tweets is found.'});
+										}
+										else{
+											res.send({status: 'OK', items: result});
+										}
+									});
 						}else {
-							query.$and.push({ sort: {timestamp: 'desc'} });
+							Item.find(query)
+									.sort({timestamp: -1})
+									.limit(pagesize)
+									.exec(function(err, result){
+										if(err){
+											console.log(err);
+											res.send({status: 'error', error: err});
+										}
+										else if(!result){
+											console.log('No tweets is found.');
+											res.send({status: 'error', error: 'No tweets is found.'});
+										}
+										else{
+											res.send({status: 'OK', items: result});
+										}
+									});
 						}
+					}else {
+						res.send({status: 'OK', items: []});
+					}
+				});
+			}else {
+				// let query = { $and: [] };
+				// query.$and.push({username:username});
+				//
+				// query.$and.push({timestamp:{$lte : timestamp}});
+				// if(q) {
+				// 	query.$and.push({content: {$regex: q}});
+				// }
+				// if(parent !== 'none') {
+				// 	query.$and.push({parent: parent});
+				// }
+				// if(!replies) {
+				// 	query.$and.push({content: {$not: /^RT.*/}});
+				// }
+				// if(rank === 'interest') {
+				// 	query.$and.push({ sort: {like: 'desc'} });
+				// 	query.$and.push({ sort: {retweet: 'desc'} });
+				// }else {
+				// 	query.$and.push({ sort: {timestamp: 'desc'} });
+				// }
+				// Item.find(query)
+				// 		.limit(pagesize)
+				// 		.exec(function(err, result){
+				// 			if(err){
+				// 				console.log(err);
+				// 				res.send({status: 'error', error: err});
+				// 			}
+				// 			else if(!result){
+				// 				console.log('No tweets is found.');
+				// 				res.send({status: 'error', error: 'No tweets is found.'});
+				// 			}
+				// 			else{
+				// 				res.send({status: 'OK', items: result});
+				// 			}
+				// 		});
+				let query = {};
+				query.username = username;
+				query.timestamp = {$lte: timestamp};
+				if(q) {
+					query.content = {$regex: q};
+				}
+				if(parent !== 'none') {
+					query.parent = parent;
+				}
+				if(!replies) {
+					query.content = {$not: /^RT.*/};
+				}
+				if(rank === 'interest') {
+					Item.find(query)
+							.sort({like: -1, retweet: -1})
+							.limit(pagesize)
+							.exec(function(err, result){
+								if(err){
+									console.log(err);
+									res.send({status: 'error', error: err});
+								}
+								else if(!result){
+									console.log('No tweets is found.');
+									res.send({status: 'error', error: 'No tweets is found.'});
+								}
+								else{
+									res.send({status: 'OK', items: result});
+								}
+							});
+				}else {
+					Item.find(query)
+							.sort({timestamp: -1})
+							.limit(pagesize)
+							.exec(function(err, result){
+								if(err){
+									console.log(err);
+									res.send({status: 'error', error: err});
+								}
+								else if(!result){
+									console.log('No tweets is found.');
+									res.send({status: 'error', error: 'No tweets is found.'});
+								}
+								else{
+									res.send({status: 'OK', items: result});
+								}
+							});
+				}
+			}
+		}else {
+			if(following) {
+				User.findOne({
+						username: req.session.username,
+				}).lean().exec(function(err, found) {
+					// let query = { $and: [] };
+					// query['$and']=[];
+					// query.$and.push({username: {$in: found.following}});
+					//
+					// query.$and.push({timestamp:{$lte : timestamp}});
+					// if(q) {
+					// 	query.$and.push({content: {$regex: q}});
+					// }
+					// if(parent !== 'none') {
+					// 	query.$and.push({parent: parent});
+					// }
+					// if(!replies) {
+					// 	query.$and.push({content: {$not: /^RT.*/}});
+					// }
+					// if(rank === 'interest') {
+					// 	query.$and.push({ sort: {like: 'desc'} });
+					// 	query.$and.push({ sort: {retweet: 'desc'} });
+					// }else {
+					// 	query.$and.push({ $sort: {timestamp: 'desc'} });
+					// }
+					// Item.find(query)
+					// 		.limit(pagesize)
+					// 		.exec(function(err, result){
+					// 			if(err){
+					// 				console.log(err);
+					// 				res.send({status: 'error', error: err});
+					// 			}
+					// 			else if(!result){
+					// 				console.log('No tweets is found.');
+					// 				res.send({status: 'error', error: 'No tweets is found.'});
+					// 			}
+					// 			else{
+					// 				res.send({status: 'OK', items: result});
+					// 			}
+					// 		});
+					let query = {};
+					query.username = {$in: found.following};
+					query.timestamp = {$lte: timestamp};
+					if(q) {
+						query.content = {$regex: q};
+					}
+					if(parent !== 'none') {
+						query.parent = parent;
+					}
+					if(!replies) {
+						query.content = {$not: /^RT.*/};
+					}
+					if(rank === 'interest') {
 						Item.find(query)
+								.sort({like: -1, retweet: -1})
 								.limit(pagesize)
 								.exec(function(err, result){
 									if(err){
@@ -86,72 +274,72 @@ module.exports = {
 									}
 								});
 					}else {
-						res.send({status: 'OK', items: []});
+						Item.find(query)
+								.sort({timestamp: -1})
+								.limit(pagesize)
+								.exec(function(err, result){
+									if(err){
+										console.log(err);
+										res.send({status: 'error', error: err});
+									}
+									else if(!result){
+										console.log('No tweets is found.');
+										res.send({status: 'error', error: 'No tweets is found.'});
+									}
+									else{
+										res.send({status: 'OK', items: result});
+									}
+								});
 					}
 				});
 			}else {
-				let query = { $and: [] };
+				// let query = { $and: [] };
 				// query['$and']=[];
-				query.$and.push({username:username});
-
-				query.$and.push({timestamp:{$lte : timestamp}});
+				// query.$and.push({timestamp:{$lte : timestamp}});
+				// if(q) {
+				// 	query.$and.push({content: {$regex: q}});
+				// }
+				// if(parent !== 'none') {
+				// 	query.$and.push({parent: parent});
+				// }
+				// if(!replies) {
+				// 	query.$and.push({content: {$not: /^RT.*/}});
+				// }
+				// if(rank === 'interest') {
+				// 	query.$and.push({ sort: {like: 'desc'} });
+				// 	query.$and.push({ sort: {retweet: 'desc'} });
+				// }else {
+				// 	query.$and.push({ sort: {timestamp: 'desc'} });
+				// }
+				// Item.find(query)
+				// 		.limit(pagesize)
+				// 		.exec(function(err, result){
+				// 			if(err){
+				// 				console.log(err);
+				// 				res.send({status: 'error', error: err});
+				// 			}
+				// 			else if(!result){
+				// 				console.log('No tweets is found.');
+				// 				res.send({status: 'error', error: 'No tweets is found.'});
+				// 			}
+				// 			else{
+				// 				res.send({status: 'OK', items: result});
+				// 			}
+				// 		});
+				let query = {};
+				query.timestamp = {$lte: timestamp};
 				if(q) {
-					query.$and.push({content: {$regex: q}});
+					query.content = {$regex: q};
 				}
 				if(parent !== 'none') {
-					query.$and.push({parent: parent});
+					query.parent = parent;
 				}
 				if(!replies) {
-					query.$and.push({content: {$not: /^RT.*/}});
+					query.content = {$not: /^RT.*/};
 				}
 				if(rank === 'interest') {
-					query.$and.push({ sort: {like: 'desc'} });
-					query.$and.push({ sort: {retweet: 'desc'} });
-				}else {
-					query.$and.push({ sort: {timestamp: 'desc'} });
-				}
-				Item.find(query)
-						.limit(pagesize)
-						.exec(function(err, result){
-							if(err){
-								console.log(err);
-								res.send({status: 'error', error: err});
-							}
-							else if(!result){
-								console.log('No tweets is found.');
-								res.send({status: 'error', error: 'No tweets is found.'});
-							}
-							else{
-								res.send({status: 'OK', items: result});
-							}
-						});
-			}
-		}else {
-			if(following) {
-				User.findOne({
-						username: req.session.username,
-				}).lean().exec(function(err, found) {
-					let query = { $and: [] };
-					query['$and']=[];
-					query.$and.push({username: {$in: found.following}});
-
-					query.$and.push({timestamp:{$lte : timestamp}});
-					if(q) {
-						query.$and.push({content: {$regex: q}});
-					}
-					if(parent !== 'none') {
-						query.$and.push({parent: parent});
-					}
-					if(!replies) {
-						query.$and.push({content: {$not: /^RT.*/}});
-					}
-					if(rank === 'interest') {
-						query.$and.push({ sort: {like: 'desc'} });
-						query.$and.push({ sort: {retweet: 'desc'} });
-					}else {
-						query.$and.push({ $sort: {timestamp: 'desc'} });
-					}
 					Item.find(query)
+							.sort({like: -1, retweet: -1})
 							.limit(pagesize)
 							.exec(function(err, result){
 								if(err){
@@ -166,41 +354,24 @@ module.exports = {
 									res.send({status: 'OK', items: result});
 								}
 							});
-				});
-			}else {
-				let query = { $and: [] };
-				query['$and']=[];
-				query.$and.push({timestamp:{$lte : timestamp}});
-				if(q) {
-					query.$and.push({content: {$regex: q}});
-				}
-				if(parent !== 'none') {
-					query.$and.push({parent: parent});
-				}
-				if(!replies) {
-					query.$and.push({content: {$not: /^RT.*/}});
-				}
-				if(rank === 'interest') {
-					query.$and.push({ sort: {like: 'desc'} });
-					query.$and.push({ sort: {retweet: 'desc'} });
 				}else {
-					query.$and.push({ sort: {timestamp: 'desc'} });
+					Item.find(query)
+							.sort({timestamp: -1})
+							.limit(pagesize)
+							.exec(function(err, result){
+								if(err){
+									console.log(err);
+									res.send({status: 'error', error: err});
+								}
+								else if(!result){
+									console.log('No tweets is found.');
+									res.send({status: 'error', error: 'No tweets is found.'});
+								}
+								else{
+									res.send({status: 'OK', items: result});
+								}
+							});
 				}
-				Item.find(query)
-						.limit(pagesize)
-						.exec(function(err, result){
-							if(err){
-								console.log(err);
-								res.send({status: 'error', error: err});
-							}
-							else if(!result){
-								console.log('No tweets is found.');
-								res.send({status: 'error', error: 'No tweets is found.'});
-							}
-							else{
-								res.send({status: 'OK', items: result});
-							}
-						});
 			}
 		}
 	}
