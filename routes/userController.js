@@ -3,6 +3,8 @@ var path = require('path');
 var mongoose = require('mongoose');
 var uuid = require('node-uuid');
 var User = require('../models/user');
+var MongoClient = require('mongodb').MongoClient;
+var url = 'mongodb://localhost:27017/Robingoods';
 
 module.exports = {
     post_adduser: function(req, res) {

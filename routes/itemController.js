@@ -1,9 +1,7 @@
 var express = require('express');
-var User = require('../models/user');
-var Item = require('../models/item');
-var mongoose = require('mongoose');
-var cassandra = require('cassandra-driver');
 var path    = require('path');
+var MongoClient = require('mongodb').MongoClient;
+var url = 'mongodb://localhost:27017/Robingoods';
 
 module.exports = {
 	post_additem: function(req, res){
