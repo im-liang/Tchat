@@ -1,6 +1,7 @@
 var express = require('express');
 var User = require('../models/user');
 var Item = require('../models/item');
+var Media = require('../models/media');
 var mongoose = require('mongoose');
 var cassandra = require('cassandra-driver');
 var path    = require('path');
