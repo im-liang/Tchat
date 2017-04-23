@@ -50,25 +50,25 @@ module.exports = {
 						});
 					}
 					if(found) {
-						let query = {};
+						let query = { $and: [] };
 						query['$and']=[];
-						query['$and'].push({username:username});
+						query.$and.push({username:username});
 
-						query['$and'].push({timestamp:{$lte : timestamp}});
+						query.$and.push({timestamp:{$lte : timestamp}});
 						if(q) {
-							query['$and'].push({content: {$regex: q}});
+							query.$and.push({content: {$regex: q}});
 						}
 						if(parent !== 'none') {
-							query['$and'].push({parent: parent});
+							query.$and.push({parent: parent});
 						}
 						if(!replies) {
-							query['$and'].push({content: {$not: /^RT.*/}});
+							query.$and.push({content: {$not: /^RT.*/}});
 						}
 						if(rank === 'interest') {
-							query['$and'].push({ sort: {like: 'desc'} });
-							query['$and'].push({ sort: {retweet: 'desc'} });
+							query.$and.push({ sort: {like: 'desc'} });
+							query.$and.push({ sort: {retweet: 'desc'} });
 						}else {
-							query['$and'].push({ sort: {timestamp: 'desc'} });
+							query.$and.push({ sort: {timestamp: 'desc'} });
 						}
 						Item.find(query)
 								.limit(pagesize)
@@ -90,25 +90,25 @@ module.exports = {
 					}
 				});
 			}else {
-				let query = {};
-				query['$and']=[];
-				query['$and'].push({username:username});
+				let query = { $and: [] };
+				// query['$and']=[];
+				query.$and.push({username:username});
 
-				query['$and'].push({timestamp:{$lte : timestamp}});
+				query.$and.push({timestamp:{$lte : timestamp}});
 				if(q) {
-					query['$and'].push({content: {$regex: q}});
+					query.$and.push({content: {$regex: q}});
 				}
 				if(parent !== 'none') {
-					query['$and'].push({parent: parent});
+					query.$and.push({parent: parent});
 				}
 				if(!replies) {
-					query['$and'].push({content: {$not: /^RT.*/}});
+					query.$and.push({content: {$not: /^RT.*/}});
 				}
 				if(rank === 'interest') {
-					query['$and'].push({ sort: {like: 'desc'} });
-					query['$and'].push({ sort: {retweet: 'desc'} });
+					query.$and.push({ sort: {like: 'desc'} });
+					query.$and.push({ sort: {retweet: 'desc'} });
 				}else {
-					query['$and'].push({ sort: {timestamp: 'desc'} });
+					query.$and.push({ sort: {timestamp: 'desc'} });
 				}
 				Item.find(query)
 						.limit(pagesize)
@@ -122,7 +122,6 @@ module.exports = {
 								res.send({status: 'error', error: 'No tweets is found.'});
 							}
 							else{
-								console.log(result);
 								res.send({status: 'OK', items: result});
 							}
 						});
@@ -132,25 +131,25 @@ module.exports = {
 				User.findOne({
 						username: req.session.username,
 				}).lean().exec(function(err, found) {
-					let query = {};
+					let query = { $and: [] };
 					query['$and']=[];
-					query['$and'].push({username: {$in: found.following}});
+					query.$and.push({username: {$in: found.following}});
 
-					query['$and'].push({timestamp:{$lte : timestamp}});
+					query.$and.push({timestamp:{$lte : timestamp}});
 					if(q) {
-						query['$and'].push({content: {$regex: q}});
+						query.$and.push({content: {$regex: q}});
 					}
 					if(parent !== 'none') {
-						query['$and'].push({parent: parent});
+						query.$and.push({parent: parent});
 					}
 					if(!replies) {
-						query['$and'].push({content: {$not: /^RT.*/}});
+						query.$and.push({content: {$not: /^RT.*/}});
 					}
 					if(rank === 'interest') {
-						query['$and'].push({ sort: {like: 'desc'} });
-						query['$and'].push({ sort: {retweet: 'desc'} });
+						query.$and.push({ sort: {like: 'desc'} });
+						query.$and.push({ sort: {retweet: 'desc'} });
 					}else {
-						query['$and'].push({ $sort: {timestamp: 'desc'} });
+						query.$and.push({ $sort: {timestamp: 'desc'} });
 					}
 					Item.find(query)
 							.limit(pagesize)
@@ -169,23 +168,23 @@ module.exports = {
 							});
 				});
 			}else {
-				let query = {};
+				let query = { $and: [] };
 				query['$and']=[];
-				query['$and'].push({timestamp:{$lte : timestamp}});
+				query.$and.push({timestamp:{$lte : timestamp}});
 				if(q) {
-					query['$and'].push({content: {$regex: q}});
+					query.$and.push({content: {$regex: q}});
 				}
 				if(parent !== 'none') {
-					query['$and'].push({parent: parent});
+					query.$and.push({parent: parent});
 				}
 				if(!replies) {
-					query['$and'].push({content: {$not: /^RT.*/}});
+					query.$and.push({content: {$not: /^RT.*/}});
 				}
 				if(rank === 'interest') {
-					query['$and'].push({ sort: {like: 'desc'} });
-					query['$and'].push({ sort: {retweet: 'desc'} });
+					query.$and.push({ sort: {like: 'desc'} });
+					query.$and.push({ sort: {retweet: 'desc'} });
 				}else {
-					query['$and'].push({ sort: {timestamp: 'desc'} });
+					query.$and.push({ sort: {timestamp: 'desc'} });
 				}
 				Item.find(query)
 						.limit(pagesize)
