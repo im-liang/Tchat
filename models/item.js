@@ -4,13 +4,13 @@ var User = require('./user');
 var Media = require('./media');
 
 var ItemSchema = new mongoose.Schema({
-	username: { type: String, ref: 'User' },
+	username: {type: String},
 	content: String,
 	timestamp: {type:Number, index: true},
 	parent: { type: ObjectId },
 	media: [String],
-	like: [{ type: ObjectId, ref: 'User', index: {unique: true, dropDups: true}}],
-	retweet: [{ type: ObjectId, index: {unique: true, dropDups: true} }]
+	like: [{ type: ObjectId, ref: 'User', index: true}],
+	retweet: [{ type: ObjectId}]
 });
 
 ItemSchema.set('toJSON', {getter: true, virtuals: true});
