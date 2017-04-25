@@ -28,7 +28,7 @@ var router = require('./routes/routes');
 app.use('/', router);
 
 // database
-mongoose.connect('mongodb://130.245.168.213/Robingoods');
+mongoose.connect('mongodb://192.168.1.24/Robingoods');
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -41,14 +41,6 @@ db.once('open', function() {
 app.use(express.static(__dirname + '/public'));
 
 // start the server
-const server0 = app.listen(port, function() {
+const server = app.listen(port, function() {
   console.log('App started on port ' + port + '...');
-});
-
-const server1 = app.listen(3001, function() {
-  console.log('App started on port 3001 ...');
-});
-
-const server2 = app.listen(3002, function() {
-  console.log('App started on port 3002 ...');
 });
