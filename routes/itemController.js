@@ -58,7 +58,7 @@ module.exports = {
 			}
 		  else{
 					if(found.media) {
-						Media.findOneAndRemove({_id: {$in: mongoose.Types.ObjectId(found.media)}}, function (error, result) {
+						Media.findOneAndRemove({uid: {$in: found.media}}, function (error, result) {
 							if(error) {
 								res.send({
 										status: 'error',

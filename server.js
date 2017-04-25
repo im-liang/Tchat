@@ -44,3 +44,12 @@ app.use(express.static(__dirname + '/public'));
 const server = app.listen(port, function() {
   console.log('App started on port ' + port + '...');
 });
+const server1 = app.listen(3001, function() {
+  console.log('App started on port ' + port + '...');
+});
+const server2 = app.listen(3002, function() {
+  console.log('App started on port ' + port + '...');
+});
+const server2 = app.listen(3003, function() {
+  console.log('App started on port ' + port + '...');
+});
