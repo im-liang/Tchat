@@ -6,6 +6,4 @@ var Media_Schema = new mongoose.Schema({
   uid: String
 });
 
-Media_Schema.set('toJSON', {getter: true, virtuals: true});
-
 module.exports = mongoose.model('Media', Media_Schema);

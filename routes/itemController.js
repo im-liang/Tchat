@@ -17,6 +17,7 @@ module.exports = {
 		item.parent = req.body.parent;
 		item.timestamp = parseInt((Date.now() / 1000).toFixed(0));
 		item.media = req.body.media;
+		item.like = 0;
 
 		item.save(function(err, result){
 			if (err) {

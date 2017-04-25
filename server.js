@@ -28,7 +28,7 @@ var router = require('./routes/routes');
 app.use('/', router);
 
 // database
-mongoose.connect('mongodb://localhost/Robingoods');
+mongoose.connect('mongodb://130.245.168.213/Robingoods');
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
