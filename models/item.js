@@ -9,8 +9,7 @@ var ItemSchema = new mongoose.Schema({
 	timestamp: {type:Number, index: true},
 	parent: { type: ObjectId },
 	media: [String],
-	like: [{ type: ObjectId, ref: 'User', index: true}],
-	retweet: [{ type: ObjectId}]
+	like: Number
 });
 
 ItemSchema.set('toJSON', {getter: true, virtuals: true});

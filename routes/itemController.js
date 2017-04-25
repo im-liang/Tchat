@@ -25,27 +25,7 @@ module.exports = {
 							error: err
 					});
 			}
-			if(req.body.parent !== undefined) {
-				Item.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.parent)}, {$push:{retweet: result.id}}, function (error, found) {
-					if(error) {
-						res.send({
-								status: 'error',
-								error: error
-						});
-					}
-					if(found) {
-						res.send({status: 'OK', id: result.id});
-					}else {
-						res.send({
-								status: 'error',
-								error: '/additem no such parent'
-						});
-					}
-
-				});
-			}else {
-				res.send({status: 'OK', id: result.id});
-			}
+			res.send({status: 'OK', id: result.id});
 		});
 	},
 
@@ -83,34 +63,10 @@ module.exports = {
 										error: error
 								});
 							}
-							if(found.parent) {
-								Item.findOneAndUpdate({_id: mongoose.Types.ObjectId(found.parent)}, {$pull:{retweet: found.id}}, function (fail, result) {
-									if(fail) {
-										res.send({
-												status: 'error',
-												error: fail
-										});
-									}
-									res.send({status: 'OK'});
-								});
-							}else {
-								res.send({status: 'OK'});
-							}
+							res.send({status: 'OK'});
 						});
 					}else {
-						if(found.parent) {
-							Item.findOneAndUpdate({_id: mongoose.Types.ObjectId(found.parent)}, {$pull:{retweet: found.id}}, function (error, result) {
-								if(error) {
-									res.send({
-											status: 'error',
-											error: error
-									});
-								}
-								res.send({status: 'OK'});
-							});
-						}else {
-							res.send({status: 'OK'});
-						}
+						res.send({status: 'OK'});
 					}
 			}
   		});
@@ -122,7 +78,7 @@ module.exports = {
 			like = true;
 		}
 		if(like) {
-			Item.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.params.id)}, {$push:[{like: userid},{retweet:userid}]}, function (err, found) {
+			Item.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.params.id)}, {$inc:{like: 1}}, function (err, found) {
 				if(err){
 					console.log(err);
 					res.send({status: 'error', error: err});
@@ -136,7 +92,7 @@ module.exports = {
 				}
 			});
 		}else {
-			Item.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.params.id)}, {$pull:[{like: userid},{retweet:userid}]}, function (err, found) {
+			Item.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.params.id)}, {$inc:{like: -1}}, function (err, found) {
 				if(err){
 					console.log(err);
 					res.send({status: 'error', error: err});
