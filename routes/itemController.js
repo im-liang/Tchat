@@ -18,6 +18,7 @@ module.exports = {
 		item.timestamp = parseInt((Date.now() / 1000).toFixed(0));
 		item.media = req.body.media;
 		item.like = 0;
+		item.retweet = 0;
 
 		item.save(function(err, result){
 			if (err) {
@@ -57,7 +58,7 @@ module.exports = {
 			}
 		  else{
 					if(found.media) {
-						Media.findOneAndRemove({uid: {$in: found.media}}, function (error, result) {
+						Media.findOneAndRemove({_id: {$in: mongoose.Types.ObjectId(found.media)}}, function (error, result) {
 							if(error) {
 								res.send({
 										status: 'error',
