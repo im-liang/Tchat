@@ -4,10 +4,6 @@ const DEFAULT_ITEM_PAGESIZE = 50;
 const MAX_ITEM_PAGESIZE = 200;
 
 module.exports = {
-  get_user: function(req, res) {
-      var currentUser_username = req.params.username;
-      
-  },
   get_user_followers: function(req, res) {
     var username = req.params.username;
     var pagesize = Number(req.body.limit);

@@ -122,6 +122,21 @@ module.exports = db = {
           }
         });
       }
+    },
+    getUser: function(data, res) {
+      userCollection.findOne({
+          username: data.username
+      }, function(err, result) {
+        if(err) {
+          res.status(400).send({status:'error', error:err});
+        }else {
+          if(!result) {
+            res.status(200).send({status:'error', error:'/login: no such user!'});
+          }else {
+            res.status(200).send({status:'OK'});
+          }
+        }
+      });
     }
 
 };

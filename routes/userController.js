@@ -34,5 +34,9 @@ module.exports = {
         var key = req.body.key;
         var email = req.body.email;
         userDB.verifyUser({key: key, email: email}, res);
+    },
+    get_user: function(req, res) {
+        var username = req.params.username;
+        userDB.getUser({username:username}, res);
     }
 }

@@ -21,9 +21,9 @@ router.route('/login').get(userCtrl.get_login);
 router.route('/login').post(userCtrl.post_login);
 router.route('/logout').post(userCtrl.post_logout);
 router.route('/verify').post(userCtrl.post_verify);
+router.route('/user/:username').get(userCtrl.get_user);
 
 // Routes for follow
-router.route('/user/:username').get(followCtrl.get_user);
 router.route('/user/:username/followers').get(followCtrl.get_user_followers);
 router.route('/user/:username/following').get(followCtrl.get_user_following);
 router.route('/follow').post(followCtrl.post_follow);
