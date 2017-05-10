@@ -1,54 +1,46 @@
-// require our dependencies
 var express        = require('express');
-var expressLayouts = require('express-ejs-layouts');
-const session	   = require('express-session');
-const MongoStore   = require('connect-mongo')(session);
 var bodyParser     = require('body-parser');
-var app            = express();
-var mongoose       = require('mongoose');
-var http = require('http');
-var port           = process.env.PORT || 3000;
+var CookieParser = require('cookie-parser');
+var session = require('express-session');
 
-// use ejs and express layouts
-app.set('view engine', 'ejs');
-app.use(expressLayouts);
+var context = {};
+context.settings = require('./settings');
 
-// use body parser, and session for user cookies after login
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+var app = express();
+
+var userDB = require('./database/user.js');
+userDB.init(context);
+var tweetDB = require('./database/tweet.js');
+tweetDB.init(context, ready);
+
 app.use(session( { secret: 'team ysjl',
 		   cookie: { maxAge: null },
-		   store: new MongoStore({ mongooseConnection: mongoose.connection }),
 		   saveUninitialized: false,
 		   resave: false }
 		));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(CookieParser());
+
+app.use(express.static(__dirname + '/public'));
+app.set('view engine', 'ejs');
 
 // route our app
 var router = require('./routes/routes');
 app.use('/', router);
 
-// database
-mongoose.connect('mongodb://localhost/Robingoods');
-mongoose.Promise = global.Promise;
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-	console.log("Successfully connected to MongoDB instance...");
-  // we're connected!
+app.all('*', function(req, res) {
+  res.status(404).send('404 Not Found');
 });
 
-// set static files (css and images, etc) location
-app.use(express.static(__dirname + '/public'));
 
-// start the server
-const server0 = app.listen(port, function() {
-  console.log('App started on port ' + port + '...');
+app.listen(context.settings.http.port, function() {
+  console.log('App started on port ' + context.settings.http.port + '...');
 });
 
-const server1 = app.listen(3001, function() {
-  console.log('App started on port 3001 ...');
-});
-
-const server2 = app.listen(3002, function() {
-  console.log('App started on port 3002 ...');
-});
+function ready(err) {
+  if (err) {
+    throw err;
+  }
+}

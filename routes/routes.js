@@ -1,23 +1,16 @@
 var express = require('express');
-var Media = require('../models/media');
 var userCtrl = require('./userController');
-var itemCtrl = require('./itemController');
+var tweetCtrl = require('./tweetController');
 var followCtrl = require('./followController');
-var searchCtrl = require('./searchController');
-var mediaCtrl = require('./mediaController');
-var path    = require('path');
-var multer  = require('multer');
-var uuid = require('node-uuid');
 
 var router = express.Router();
 
 router.get('/', function(req, res) {
 //	render layout.ejs with index.ejs as `body`.
-	var sess = req.session;
-	if(sess.username === undefined) {
-		res.render('pages/login.ejs');
+	if(req.session.username) {
+		res.render('main.ejs');
 	} else {
-		res.render('pages/main.ejs');
+		res.render('login.ejs');
 	}
 });
 
@@ -27,7 +20,6 @@ router.route('/signup').get(userCtrl.get_signup);
 router.route('/login').get(userCtrl.get_login);
 router.route('/login').post(userCtrl.post_login);
 router.route('/logout').post(userCtrl.post_logout);
-router.route('/verify').get(userCtrl.get_verify);
 router.route('/verify').post(userCtrl.post_verify);
 
 // Routes for follow
@@ -37,31 +29,16 @@ router.route('/user/:username/following').get(followCtrl.get_user_following);
 router.route('/follow').post(followCtrl.post_follow);
 
 // Routes for search
-router.route('/search').post(searchCtrl.post_search);
+router.route('/search').post(tweetCtrl.post_search);
 
 // Routes for media
-var upload = multer({ dest: './image/' });
-router.post('/addmedia', upload.single('content'), function(req, res) {
-	var id = uuid.v4();
-	var media = new Media();
-  media.content = req.file.filename;
-	media.uid = id;
-	media.save(function(err, result){
-		if (err) {
-				res.send({
-						status: 'error',
-						error: err
-				});
-		}
-		res.send({status: 'OK', id: id});
-	});
-});
-router.route('/media/:id').get(mediaCtrl.get_media);
+router.post('/addmedia').post(tweetCtrl.post_addMedia);
+router.route('/media/:id').get(tweetCtrl.get_media);
 
 // Routes for item
-router.route('/additem').post(itemCtrl.post_additem);
-router.route('/item/:id').get(itemCtrl.get_item);
-router.route('/item/:id').delete(itemCtrl.delete_item);
-router.route('/item/:id/like').post(itemCtrl.post_likeitem);
+router.route('/additem').post(tweetCtrl.post_additem);
+router.route('/item/:id').get(tweetCtrl.get_item);
+router.route('/item/:id').delete(tweetCtrl.delete_item);
+router.route('/item/:id/like').post(tweetCtrl.post_likeitem);
 
 module.exports = router;
