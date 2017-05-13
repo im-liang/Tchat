@@ -1,4 +1,5 @@
 var express = require('express');
+var userDB = require('../database/user.js');
 
 const DEFAULT_ITEM_PAGESIZE = 50;
 const MAX_ITEM_PAGESIZE = 200;
@@ -11,8 +12,8 @@ module.exports = {
       pagesize = DEFAULT_ITEM_PAGESIZE;
     else if(pagesize > MAX_ITEM_PAGESIZE)
       pagesize = MAX_ITEM_PAGESIZE;
-    var followers = [];
 
+    userDB.follower({username:username, limit: pagesize}, res);
   },
   get_user_following: function(req, res) {
     var username = req.params.username;
@@ -21,6 +22,8 @@ module.exports = {
       pagesize = DEFAULT_ITEM_PAGESIZE;
     else if(pagesize > MAX_ITEM_PAGESIZE)
       pagesize = MAX_ITEM_PAGESIZE;
+
+    userDB.following({username:username, limit: pagesize}, res);
   },
   post_follow: function(req, res) {
     var username = req.body.username;
@@ -28,5 +31,6 @@ module.exports = {
     if(follow === undefined)
       follow = true;
 
+    userDB.follow({username:username, follow: follow}, req, res);
   }
 }

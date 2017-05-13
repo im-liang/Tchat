@@ -25,7 +25,7 @@ module.exports = db = {
 
             followCollection = db.collection('follow');
             followCollection.createIndex({follower: 1});
-            followCollection.createIndex({followed: 1});
+            followCollection.createIndex({following: 1});
         });
     },
     addUser: function(data, res) {
@@ -137,6 +137,42 @@ module.exports = db = {
           }
         }
       });
+    },
+    follow: function(data, req, res) {
+      if(data.follow) {
+        followCollection.insertOne({following:data.username, follower: req.session.username}, function(err, result) {
+          if(err) {
+            res.status(400).send({status:'error', error:err});
+          }else {
+            res.status(200).send({status:'OK'});
+          }
+        });
+      }else {
+        followCollection.deleteMany({following:data.username, follower: req.session.username}, function(err, result) {
+          if(err) {
+            res.status(400).send({status:'error', error:err});
+          }else {
+            res.status(200).send({status:'OK'});
+          }
+        });
+      }
+    },
+    following: function(data, res) {
+      followCollection.find({follower: data.username}, {following:1}, {limit: data.limit}, function(err, result) {
+        if(err) {
+          res.status(400).send({status:'error', error:err});
+        }else {
+          res.status(200).send({status:'OK', users:result.toArray()});
+        }
+      });
+    },
+    follower: function(data, res) {
+      followCollection.find({following: data.username}, {follower:1}, {limit: data.limit}, function(err, result) {
+        if(err) {
+          res.status(400).send({status:'error', error:err});
+        }else {
+          res.status(200).send({status:'OK', users:result.toArray()});
+        }
+      });
     }
-
 };
