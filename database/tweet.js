@@ -26,49 +26,38 @@ module.exports = tweetDB = {
       tweetCollection.createIndex({interest:1});
     });
   },
-  addTweet: function(req, res) {
-    var content = req.body.content;
-    var parent = mongodb.ObjectId(req.body.parent);
-    var media = req.body.media;
-    var postedBy = mongodb.ObjectId(req.body.postedBy);
-    var newTweet = {
-      timestamp: new Date(),
-      content,
-      parent,
-      media,
-      postedBy,
-      like: 0,
-      interest: (new Date()).getTime()
-    };
-    tweetCollection.insertOne(newTweet, function (err, result) {
+  addTweet: function(data, res) {
+    tweetCollection.insertOne(data.newTweet, function (err, result) {
       if(err) {
-        res.status(500).send({status: 'error', error: err.message});
+        res.status(500).send({status: 'error', error: err});
       }else {
-        res.status(200).send({status: 'OK', success: 'post created', id: result.insertedID});
+        res.status(200).send({status: 'OK', id: result._id});
       }
     });
   },
-  getTweet: function(req, res) {
+  getTweet: function(data, res) {
     var id = mongodb.ObjectId(data.id);
     tweetCollection.findOne({_id: id}, function (err, result) {
-      if(!err && result !== null) {
-        callback(err, result);
+      if(err) {
+        res.status(500).send({status: 'error', error: err});
+      }else {
+        res.status(200).send({status: 'OK', item: result});
       }
     });
   },
-  deleteTweet: function(req, res) {
+  deleteTweet: function(data, res) {
 
   },
-  searchTweet: function(req, res) {
+  searchTweet: function(data, res) {
 
   },
-  addMedia: function(req, res) {
+  addMedia: function(data, res) {
 
   },
-  getMedia: function(req, res) {
+  getMedia: function(data, res) {
 
   },
-  like: function(req, res) {
+  like: function(data, res) {
 
   }
 };
