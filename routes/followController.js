@@ -28,8 +28,10 @@ module.exports = {
   post_follow: function(req, res) {
     var username = req.body.username;
     var follow = req.body.follow;
-    if(follow === undefined)
+    if(follow === undefined || follow == '' || follow == 'true')
       follow = true;
+    if(follow == 'false')
+      follow = false;
 
     userDB.follow({username:username, follow: follow}, req, res);
   }
