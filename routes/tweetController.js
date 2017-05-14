@@ -38,8 +38,10 @@ module.exports = {
 	post_likeitem: function(req, res) {
 		var like = req.body.like;
 		userid = req.session.userid;
-		if(like === undefined) {
-			like = true;
+		if(like === undefined || like === true) {
+			like = 1;
+		}else {
+			like = -1;
 		}
 
 		tweetDB.like({id: userid, like: like}, res);

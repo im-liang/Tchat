@@ -39,14 +39,22 @@ module.exports = tweetDB = {
     var id = mongodb.ObjectId(data.id);
     tweetCollection.findOne({_id: id}, function (err, result) {
       if(err) {
-        res.status(500).send({status: 'error', error: err});
+        res.status(400).send({status: 'error', error: err});
       }else {
         res.status(200).send({status: 'OK', item: result});
       }
     });
   },
+  //TODO delete media
   deleteTweet: function(data, res) {
-
+    var id = mongodb.ObjectId(data.id);
+    tweetCollection.deleteMany({_id: id}, function (err, result) {
+      if(err) {
+        res.status(400).send({status: 'error', error: err});
+      }else {
+        res.status(200).send({status: 'OK', item: result});
+      }
+    });
   },
   searchTweet: function(data, res) {
 
@@ -58,6 +66,12 @@ module.exports = tweetDB = {
 
   },
   like: function(data, res) {
-
+    tweetCollection.findOneAndUpdate({_id: data.id}, {$inc: {like:data.like}}, function(err, result) {
+      if(err) {
+        res.status(400).send({status: 'error', error: err});
+      }else {
+        res.status(200).send({status: 'OK'});
+      }
+    });
   }
 };
