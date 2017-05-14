@@ -158,25 +158,21 @@ module.exports = db = {
       }
     },
     following: function(data, res) {
-      followCollection.find({follower: data.username}, {following:1}, {limit: data.limit}, function(err, result) {
-        if(err) {
-          res.status(400).send({status:'error', error:err});
-        }else {
-          var users = [];
-          for(var i = 0; i < result.length; i++) {
-
+      followCollection.distinct("following", {follower: data.username}, function(err, result) {
+          if(err) {
+            res.status(400).send({status:'error', error:err});
+          }else {
+            res.status(200).send({status:'OK', users:result});
           }
-          res.status(200).send({status:'OK', users:result.toArray()});
-        }
       });
     },
     follower: function(data, res) {
-      followCollection.find({following: data.username}, {follower:1}, {limit: data.limit}, function(err, result) {
-        if(err) {
-          res.status(400).send({status:'error', error:err});
-        }else {
-          res.status(200).send({status:'OK', users:result.toArray()});
-        }
+      followCollection.distinct("follower", {following: data.username}, function(err, result) {
+          if(err) {
+            res.status(400).send({status:'error', error:err});
+          }else {
+            res.status(200).send({status:'OK', users:result});
+          }
       });
     }
 };
