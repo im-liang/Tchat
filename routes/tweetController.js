@@ -10,9 +10,12 @@ module.exports = {
 		}
 
 		var content = req.body.content;
-    var parent = mongodb.ObjectId(req.body.parent);
+		var parent = req.body.parent;
+		if(parent) {
+			parent = mongodb.ObjectId(req.body.parent);
+		}
     var media = req.body.media;
-    var postedBy = mongodb.ObjectId(req.session.username);
+    var postedBy = mongodb.ObjectId(req.session.userid);
     var newTweet = {
       timestamp: new Date(),
       content,
@@ -49,7 +52,14 @@ module.exports = {
 		tweetDB.like({id: userid, like: like}, res);
 	},
   post_search: function(req, res) {
-		
+		var timestamp = req.body.timestamp;
+		var limit = req.body.limit;
+		var q = req.body.q;
+		var username = req.body.username;
+		var following = req.body.following;
+		var rank = req.body.rank;
+		var parent = req.body.parent;
+
 		tweetDB.searchTweet({}, res);
   },
   get_media: function(req, res) {
@@ -63,17 +73,17 @@ module.exports = {
 		boy.on('file', function(fieldname, file, filename, encoding, mimetype) {
 			if(filename.length == 0) {
 				file.pipe(BlackHole());
-				res.status(400).send({status:'error', error:'file is zero byte'});
+				res.status(400).send({status:'error', error:'file size is 0'});
 			}
 			var fileID = mongodb.ObjectID();
 			var uploadStream = tweetDB.getBucket().openUploadStreamWithId(fileID, filename, {metadata:{}, contentType:mimetype});
 			file.on('end', function () {
-				if(ended) console.error('WTF: ended!!');
+				if(ended) console.error('HELL!!!');
 				fields.attachmentList.push({name:filename, id:fileID});
 			});
 			file.on('limit', function(){
 				uploadStream.abort(function () {});
-				res.status(400).send({status:'error', error:'file is too large'});
+				res.status(400).send({status:'error', error:'file size is too large'});
 			});
 			file.pipe(uploadStream).once('finish', function () {
 				if(ended) return tweetDB.getBucket().delete(fileID);

@@ -91,10 +91,10 @@
           <button type="submit" class="btn btn-primary btn-lg">like/unlike</button>
         </div>
       </form>
-      <form method="post" enctype="multipart/form-data" action="/addmedia">
+      <form method="post" action="javascript:addmedia()">
         <div class="form-group">
           <label>Add Media</label>
-          <input type="file" name="content" class="form-control" id="media" placeholder="media">
+          <input type="file" name="content" class="form-control" accept="video/*,image/*" id="media" placeholder="media">
           <button type="submit" class="btn btn-primary btn-lg">Submit</button>
         </div>
       </form>

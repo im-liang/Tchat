@@ -39,7 +39,7 @@ module.exports = tweetDB = {
       if(err) {
         res.status(500).send({status: 'error', error: err});
       }else {
-        res.status(200).send({status: 'OK', id: result._id});
+        res.status(200).send({status: 'OK', id: data.newTweet._id});
       }
     });
   },

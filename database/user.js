@@ -20,12 +20,12 @@ module.exports = db = {
             if (err) {
                 callback(err);
             }
-            userCollection = db.collection('user');
-            userCollection.createIndex({username: 1});
-
             followCollection = db.collection('follow');
             followCollection.createIndex({follower: 1});
             followCollection.createIndex({following: 1});
+
+            userCollection = db.collection('user');
+            userCollection.createIndex({username: 1});
         });
     },
     addUser: function(data, res) {
@@ -162,6 +162,10 @@ module.exports = db = {
         if(err) {
           res.status(400).send({status:'error', error:err});
         }else {
+          var users = [];
+          for(var i = 0; i < result.length; i++) {
+
+          }
           res.status(200).send({status:'OK', users:result.toArray()});
         }
       });

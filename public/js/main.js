@@ -81,7 +81,7 @@ function add_item() {
     data: formData,
     success: function(data){
       if(data.status == 'OK') {
-        alert('good');
+        alert(data.id);
         window.location.href = window.location.origin;
       }else if(data.status == 'error') {
         alert(data.error);
@@ -278,21 +278,20 @@ function follower() {
 }
 
 function addmedia() {
-  var content = $('#media')[0].files[0];
-  var obj = {"content": content};
-  var formData = JSON.stringify(obj);
+  var content = document.getElementById("media").files[0];
+  var formData = new FormData();
+  formData.append('content', content);
   $.ajax({
     type: "POST",
     url: "/addmedia",
     data: formData,
-    enctype: 'multipart/form-data',
+    contentType: false,
+    processData: false,
     success: function(data){
       alert("good");
     },
     error: function(ts) {
       console.log(ts.responseText);
-    },
-    dataType: "json",
-    contentType : "application/json"
+    }
   });
 }
