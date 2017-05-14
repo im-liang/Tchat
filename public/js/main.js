@@ -72,7 +72,8 @@ function logout() {
 function add_item() {
   var content = $('#item_content').val();
   var parent = $("#item_parent").val();
-  var obj = { "content": content, "parent": parent};
+  var media = $("#item_media").val();
+  var obj = { "content": content, "parent": parent, "media": media};
   var formData = JSON.stringify(obj);
   $.ajax({
     type: "POST",
@@ -95,10 +96,37 @@ function add_item() {
   });
 }
 
+function delete_item() {
+  var id = $("#item_id").val();
+  $.ajax({
+    type: "DELETE",
+    url: "/item/"+id,
+    success: function(data){
+      if(data.status == 'OK') {
+        alert('successfully deleted the tweet');
+        window.location.href = window.location.origin;
+      }else if(data.status == 'error') {
+        alert(data.error);
+        window.location.href = window.location.origin;
+      }
+    },
+    error: function(ts) {
+      console.log(ts.responseText);
+    },
+    dataType: "json",
+    contentType : "application/json"
+  });
+}
+
 function search() {
   var timestamp = $('#timestamp').val();
   var limit = $('#limit').val();
-  var obj = { "timestamp": timestamp, "limit":limit};
+  var q = $('#q').val();
+  var username = $('#username').val();
+  var following = $('#following').val();
+  var rank = $('#rank').val();
+  var parent = $('#parent').val();
+  var obj = { "timestamp": timestamp, "limit":limit, "q":q, "username": username, "following": following, "rank": rank, "parent": parent};
   var formData = JSON.stringify(obj);
   $.ajax({
     type: "POST",
@@ -147,7 +175,7 @@ function verify() {
 }
 
 function follow() {
-  var username = $('#username').val();
+  var username = $('#follow-username').val();
   var follow = $('#follow').val();
   var obj = { "username": username, "follow":follow};
   var formData = JSON.stringify(obj);
@@ -158,6 +186,83 @@ function follow() {
     success: function(data){
       if(data.status == 'OK') {
         alert('good');
+        window.location.href = window.location.origin;
+      }else if(data.status == 'error') {
+        alert(data.error);
+        window.location.href = window.location.origin;
+      }
+    },
+    error: function(ts) {
+      console.log(ts.responseText);
+    },
+    dataType: "json",
+    contentType : "application/json"
+  });
+}
+
+function like() {
+  var like = $("#like").val();
+  var id = $("#like-id").val();
+  var obj = { "like": like};
+  var formData = JSON.stringify(obj);
+  $.ajax({
+    type: "POST",
+    url: "/item/"+id+"/like",
+    data: formData,
+    success: function(data){
+      if(data.status == 'OK') {
+        alert('good');
+        window.location.href = window.location.origin;
+      }else if(data.status == 'error') {
+        alert(data.error);
+        window.location.href = window.location.origin;
+      }
+    },
+    error: function(ts) {
+      console.log(ts.responseText);
+    },
+    dataType: "json",
+    contentType : "application/json"
+  });
+}
+
+function following() {
+ var limit = $('#follow-limit').val();
+ var username = $('#following-username').val();
+ var obj = {"limit": limit};
+ var formData = JSON.stringify(obj);
+ $.ajax({
+   type: "GET",
+   url: "/user/"+username+"/following",
+   data: formData,
+   success: function(data){
+     if(data.status == 'OK') {
+       alert(data.users);
+       window.location.href = window.location.origin;
+     }else if(data.status == 'error') {
+       alert(data.error);
+       window.location.href = window.location.origin;
+     }
+   },
+   error: function(ts) {
+     console.log(ts.responseText);
+   },
+   dataType: "json",
+   contentType : "application/json"
+ });
+}
+function follower() {
+  var limit = $('#follower-limit').val();
+  var username = $('#follower-username').val();
+  var obj = {"limit": limit};
+  var formData = JSON.stringify(obj);
+  $.ajax({
+    type: "GET",
+    url: "/user/"+username+"/followers",
+    data: formData,
+    success: function(data){
+      if(data.status == 'OK') {
+        alert(data.users);
         window.location.href = window.location.origin;
       }else if(data.status == 'error') {
         alert(data.error);
