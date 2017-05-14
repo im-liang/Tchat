@@ -1,6 +1,7 @@
 var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
 var async = require("async");
+var Memcached = require('memcached');
 
 // These variables are local to this module
 var db;
@@ -162,7 +163,12 @@ module.exports = db = {
           if(err) {
             res.status(400).send({status:'error', error:err});
           }else {
-            res.status(200).send({status:'OK', users:result});
+            if(result.length > data.limit) {
+              var final = result.slice(1, data.limit);
+              res.status(200).send({status:'OK', users:final});
+            }else {
+              res.status(200).send({status:'OK', users:result});
+            }
           }
       });
     },
@@ -171,7 +177,12 @@ module.exports = db = {
           if(err) {
             res.status(400).send({status:'error', error:err});
           }else {
-            res.status(200).send({status:'OK', users:result});
+            if(result.length > data.limit) {
+              var final = result.slice(1, data.limit);
+              res.status(200).send({status:'OK', users:final});
+            }else {
+              res.status(200).send({status:'OK', users:result});
+            }
           }
       });
     }

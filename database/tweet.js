@@ -1,10 +1,12 @@
 var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
+var Memcached = require('memcached');
 
 // These variables are local to this module
 var tweetDB;
 var tweetCollection;
 var fileCollection;
+var followCollection;
 var context;
 var settings;
 var bucket;
@@ -26,6 +28,8 @@ module.exports = tweetDB = {
       tweetCollection.createIndex({timestamp: -1});
       tweetCollection.createIndex({parent:1});
       tweetCollection.createIndex({interest:1});
+
+      followCollection = tweetDB.collection('follow');
 
       fileCollection = tweetDB.collection('file');
       bucket = new mongodb.GridFSBucket(tweetDB, { bucketName: 'fileBucket' });
@@ -74,7 +78,34 @@ module.exports = tweetDB = {
       }
     });
   },
-  searchTweet: function(data, res) {
+  searchTweet: function(data, req, res) {
+    let query = {};
+    if(data.q && !data.replies) {
+      query = {$and : [{content:{$regex: data.q}}, {content: {$not: /^RT.*/}}]};
+    }else if(data.q) {
+      query['content'] = {$regex: data.q};
+    }else if(!replies) {
+      query['content'] = {$not: /^RT.*/};
+    }
+    query['timestamp'] = {$lte : data.timestamp};
+    if(parent !== 'none') {
+      query['parent'] = data.parent;
+    }
+
+    if(following == true && data.username != '') {
+      followCollection.findOne({follower: req.session.username, following: data.username}, function(err, result) {
+        if(err) {
+          res.status(400).send({status:'error', error:err});
+        }
+        if(result) {
+
+        }else {
+          res.status(200).send({status:'OK', items:[]});
+        }
+      });
+    }
+
+
 
   },
   getMedia: function(data, res) {

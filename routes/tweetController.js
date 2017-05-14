@@ -43,7 +43,7 @@ module.exports = {
 	post_likeitem: function(req, res) {
 		var like = req.body.like;
 		userid = req.session.userid;
-		if(like === undefined || like === true) {
+		if(like === undefined || like === true || like === 'true') {
 			like = 1;
 		}else {
 			like = -1;
@@ -52,6 +52,9 @@ module.exports = {
 		tweetDB.like({id: userid, like: like}, res);
 	},
   post_search: function(req, res) {
+		const DEFAULT_ITEM_PAGESIZE = 25;
+		const MAX_ITEM_PAGESIZE = 100;
+
 		var timestamp = req.body.timestamp;
 		var limit = req.body.limit;
 		var q = req.body.q;
@@ -59,8 +62,36 @@ module.exports = {
 		var following = req.body.following;
 		var rank = req.body.rank;
 		var parent = req.body.parent;
+		var replies = req.body.replies;
 
-		tweetDB.searchTweet({}, res);
+		if(timestamp === undefined)
+			timestamp = new Date();
+		else timestamp = new Date(timestamp);
+
+		if(limit === undefined || limit === '') {
+			limit = DEFAULT_ITEM_PAGESIZE
+		}else if (limit > MAX_ITEM_PAGESIZE) {
+			limit = MAX_ITEM_PAGESIZE;
+		}
+
+		if(following === undefined || follow === 'true')
+			following = true;
+		if(following === 'false')
+			following = false;
+
+		if(rank === undefined || rank === '')
+			rank = 'interest';
+
+			if(replies === undefined || replies === 'true')
+				replies = true;
+			if(replies === 'false')
+				replies = false;
+
+			if(parent === undefined || parent === '')
+				parent = 'none';
+
+
+		tweetDB.searchTweet({timestamp, limit, q, username, following, rank, parent, replies}, req, res);
   },
   get_media: function(req, res) {
 		tweetDB.getMedia({id: req.params.id}, res);
