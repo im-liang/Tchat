@@ -53,6 +53,7 @@ module.exports = tweetDB = {
       if(err) {
         res.status(400).send({status: 'error', error: err});
       }else {
+        result.id = id;
         res.status(200).send({status: 'OK', item: result});
       }
     });
@@ -109,6 +110,9 @@ module.exports = tweetDB = {
             if(err) {
                 res.status(400).send({status:'error', error:err});
             }else{
+                for(var i = 0; i < array.length; i++) {
+                  array.id = array._id;
+                }
                 res.status(200).send({status:'OK', items:array});
             }
         });
@@ -129,6 +133,9 @@ module.exports = tweetDB = {
         if(err) {
             res.status(400).send({status:'error', error:err});
         }else{
+          for(var i = 0; i < array.length; i++) {
+            array.id = array._id;
+          }
             res.status(200).send({status:'OK', items:array});
         }
       });
@@ -148,6 +155,9 @@ module.exports = tweetDB = {
               if(err) {
                   res.status(400).send({status:'error', error:err});
               }else{
+                for(var i = 0; i < array.length; i++) {
+                  array.id = array._id;
+                }
                   res.status(200).send({status:'OK', items:array});
               }
             });
@@ -165,6 +175,9 @@ module.exports = tweetDB = {
         if(err) {
             res.status(400).send({status:'error', error:err});
         }else{
+          for(var i = 0; i < array.length; i++) {
+            array.id = array._id;
+          }
             res.status(200).send({status:'OK', items:array});
         }
       });
