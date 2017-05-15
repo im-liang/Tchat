@@ -129,7 +129,6 @@ module.exports = {
 						fields.attachmentList = [];
 						done = true;
 				}
-				console.log(fields.attachmentList[0].id);
 				res.send({status:'OK', id: fields.attachmentList[0].id});
 			});
 		});

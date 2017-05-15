@@ -10,6 +10,7 @@ var followCollection;
 var context;
 var settings;
 var bucket;
+var memcached;
 
 module.exports = tweetDB = {
   // Initialize the module. Invokes callback when ready (or on error)
@@ -33,6 +34,8 @@ module.exports = tweetDB = {
 
       fileCollection = tweetDB.collection('file');
       bucket = new mongodb.GridFSBucket(tweetDB, { bucketName: 'fileBucket' });
+
+      memcached = new Memcached('localhost:11211');
     });
   },
   getBucket: function() {
@@ -80,6 +83,7 @@ module.exports = tweetDB = {
     });
   },
   searchTweet: function(data, req, res) {
+    console.log(req.body);
     let query = {};
     if(data.q && !data.replies) {
       query = {$and : [{content:{$regex: data.q}}, {content: {$not: /^RT.*/}}]};
