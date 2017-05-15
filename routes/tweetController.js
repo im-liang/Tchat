@@ -125,6 +125,7 @@ module.exports = {
 						fields.attachmentList = [];
 						ended = true;
 				}
+				console.log(fields.attachmentList[0].id);
 				res.send({status:'OK', id: fields.attachmentList[0].id});
 			});
 		});
@@ -137,5 +138,6 @@ module.exports = {
 		boy.on('fieldsLimit', function() {
 			res.status(400).send({status:'error', error:'too many fields'});
 		});
+		req.pipe(boy);
   }
 };

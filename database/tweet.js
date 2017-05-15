@@ -116,7 +116,7 @@ module.exports = tweetDB = {
           res.status(200).send({status:'OK', items:[]});
         }
       });
-    } else if (data.following == false && data.username != '') {
+    } else if (data.following == false && data.username !== '') {
       query['postedBy'] = data.username;
       let cursor = tweetCollection.find(query);
 

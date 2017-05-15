@@ -31,7 +31,7 @@ router.route('/follow').post(followCtrl.post_follow);
 router.route('/search').post(tweetCtrl.post_search);
 
 // Routes for media
-router.post('/addmedia').post(tweetCtrl.post_addMedia);
+router.route('/addmedia').post(tweetCtrl.post_addMedia);
 router.route('/media/:id').get(tweetCtrl.get_media);
 
 // Routes for item

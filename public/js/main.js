@@ -134,7 +134,11 @@ function search() {
     data: formData,
     success: function(data){
       if(data.status == 'OK') {
-        alert(data.items);
+        var items = [];
+        data.items.forEach(function(item) {
+          items.push(item.content);
+        });
+        alert(items);
       }else if(data.status == 'error') {
         alert(data.error);
         window.location.href = window.location.origin;
