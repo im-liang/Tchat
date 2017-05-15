@@ -127,7 +127,7 @@ function search() {
   var following = $('#following').val();
   var rank = $('#rank').val();
   var parent = $('#parent').val();
-  var obj = { "timestamp": timestamp, "limit":limit, "q":q, "username": username, "following": following, "rank": rank, "parent": parent};
+  var obj = { "timestamp": timestamp, "limit":parseInt(limit), "q":q, "username": username, "following": following, "rank": rank, "parent": parent};
   var formData = JSON.stringify(obj);
   $.ajax({
     type: "POST",

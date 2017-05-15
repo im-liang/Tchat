@@ -68,7 +68,7 @@ module.exports = {
 			timestamp = parseInt((Date.now() / 1000).toFixed(0));
 		else timestamp = parseInt(timestamp);
 
-		if(limit === undefined || limit === '') {
+		if(limit === undefined || limit === '' || limit < 0) {
 			limit = DEFAULT_ITEM_PAGESIZE
 		}else if (limit > MAX_ITEM_PAGESIZE) {
 			limit = MAX_ITEM_PAGESIZE;
