@@ -127,7 +127,13 @@ function search() {
   var following = $('#following').val();
   var rank = $('#rank').val();
   var parent = $('#parent').val();
-  var obj = { "timestamp": timestamp, "limit":parseInt(limit), "q":q, "username": username, "following": following, "rank": rank, "parent": parent};
+  var replies = $('#replies').val();
+  if(replies === 'true' || replies === '') {
+    replies = true;
+  }else {
+    replies = false;
+  }
+  var obj = { "timestamp": timestamp, "limit":parseInt(limit), "q":q, "username": username, "following": following, "rank": rank, "parent": parent, "replies": replies};
   var formData = JSON.stringify(obj);
   $.ajax({
     type: "POST",

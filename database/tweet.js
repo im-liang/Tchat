@@ -85,11 +85,11 @@ module.exports = tweetDB = {
   searchTweet: function(data, req, res) {
     console.log(req.body);
     let query = {};
-    if(data.q && !data.replies) {
+    if(data.q && data.replies === false) {
       query = {$and : [{content:{$regex: data.q}}, {content: {$not: /^RT.*/}}]};
     }else if(data.q) {
       query['content'] = {$regex: data.q};
-    }else if(!data.replies) {
+    }else if(data.replies === false) {
       query['content'] = {$not: /^RT.*/};
     }
     query['timestamp'] = {$lte : data.timestamp};
