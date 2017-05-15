@@ -42,11 +42,13 @@ module.exports = tweetDB = {
     return bucket;
   },
   addTweet: function(data, res) {
+    console.log('/addTweet');
+    console.log(req.body);
     tweetCollection.insertOne(data.newTweet, function (err, result) {
       if(err) {
         res.status(500).send({status: 'error', error: err});
       }else {
-        res.status(200).send({status: 'OK', id: data.newTweet._id});
+        res.status(200).send({status: 'OK', id: result.insertedId});
       }
     });
   },
