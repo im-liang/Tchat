@@ -82,6 +82,7 @@ function add_item() {
     success: function(data){
       if(data.status == 'OK') {
         alert(data.id);
+        console.log(data.id);
         window.location.href = window.location.origin;
       }else if(data.status == 'error') {
         alert(data.error);
@@ -292,7 +293,8 @@ function addmedia() {
     contentType: false,
     processData: false,
     success: function(data){
-      alert("good");
+      alert(data.id);
+      console.log(data.id);
     },
     error: function(ts) {
       console.log(ts.responseText);
