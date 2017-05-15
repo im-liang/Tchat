@@ -111,7 +111,7 @@ module.exports = tweetDB = {
                 res.status(400).send({status:'error', error:err});
             }else{
                 for(var i = 0; i < array.length; i++) {
-                  array[0].id = array[0]._id;
+                  array[i].id = array[i]._id;
                 }
                 res.status(200).send({status:'OK', items:array});
             }
@@ -134,7 +134,7 @@ module.exports = tweetDB = {
             res.status(400).send({status:'error', error:err});
         }else{
           for(var i = 0; i < array.length; i++) {
-            array[0].id = array[0]._id;
+            array[i].id = array[i]._id;
           }
             res.status(200).send({status:'OK', items:array});
         }
@@ -156,7 +156,7 @@ module.exports = tweetDB = {
                   res.status(400).send({status:'error', error:err});
               }else{
                 for(var i = 0; i < array.length; i++) {
-                  array[0].id = array[0]._id;
+                  array[i].id = array[i]._id;
                 }
                   res.status(200).send({status:'OK', items:array});
               }
@@ -176,7 +176,7 @@ module.exports = tweetDB = {
             res.status(400).send({status:'error', error:err});
         }else{
           for(var i = 0; i < array.length; i++) {
-            array[0].id = array[0]._id;
+            array[i].id = array[i]._id;
           }
             res.status(200).send({status:'OK', items:array});
         }
