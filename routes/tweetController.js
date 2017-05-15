@@ -5,6 +5,8 @@ var mongodb = require('mongodb');
 
 module.exports = {
 	post_additem: function(req, res){
+		console.log('/addTweet');
+		console.log(req.body);
 		if(!req.session.username){
 			res.send({status: 'error', error: req.session.username +' is not logged in. Permission denied.'});
 		}else {
