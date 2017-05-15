@@ -91,7 +91,6 @@ module.exports = tweetDB = {
     if(data.parent !== 'none') {
       query['parent'] = data.parent;
     }
-
     if(data.following == true && data.username != '') {
       followCollection.findOne({follower: req.session.username, following: data.username}, function(err, result) {
         if(err) {

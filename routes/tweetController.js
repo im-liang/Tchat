@@ -7,26 +7,26 @@ module.exports = {
 	post_additem: function(req, res){
 		if(!req.session.username){
 			res.send({status: 'error', error: req.session.username +' is not logged in. Permission denied.'});
-		}
+		}else {
+			var content = req.body.content;
+			var parent = req.body.parent;
+			if(parent) {
+				parent = mongodb.ObjectId(req.body.parent);
+			}
+			var media = req.body.media;
+			var postedBy = req.session.username;
+			var newTweet = {
+				timestamp: parseInt((Date.now() / 1000).toFixed(0)),
+				content,
+				parent,
+				media,
+				postedBy,
+				like: 0,
+				interest: (new Date()).getTime()
+			};
 
-		var content = req.body.content;
-		var parent = req.body.parent;
-		if(parent) {
-			parent = mongodb.ObjectId(req.body.parent);
+			tweetDB.addTweet({newTweet: newTweet}, res);
 		}
-    var media = req.body.media;
-    var postedBy = req.session.username;
-    var newTweet = {
-      timestamp: new Date(),
-      content,
-      parent,
-      media,
-      postedBy,
-      like: 0,
-      interest: (new Date()).getTime()
-    };
-
-		tweetDB.addTweet({newTweet: newTweet}, res);
 	},
 
 	get_item: function(req, res){
@@ -65,8 +65,8 @@ module.exports = {
 		var replies = req.body.replies;
 
 		if(timestamp === undefined || timestamp === '')
-			timestamp = new Date();
-		else timestamp = new Date(timestamp);
+			timestamp = parseInt((Date.now() / 1000).toFixed(0));
+		else timestamp = parseInt(timestamp);
 
 		if(limit === undefined || limit === '') {
 			limit = DEFAULT_ITEM_PAGESIZE

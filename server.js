@@ -11,9 +11,7 @@ if (cluster.isMaster) {
   console.log(`Master ${process.pid} is running`);
 
   // Fork workers.
-  for (let i = 0; i < numCPUs; i++) {
-    cluster.fork();
-  }
+  cluster.fork();
 
   cluster.on('exit', (worker, code, signal) => {
     console.log('Worker ' + worker.process.pid + ' died with code: ' + code + ', and signal: ' + signal);
@@ -31,15 +29,16 @@ if (cluster.isMaster) {
 	var tweetDB = require('./database/tweet.js');
 	tweetDB.init(context, ready);
 
-	app.use(session( { secret: 'team ysjl',
-			   cookie: { maxAge: null },
+	app.use(CookieParser());
+
+  app.use(session( { secret: 'team ysjl',
+			   cookie: { secure: false, maxAge: null },
 			   saveUninitialized: false,
 			   resave: false }
 			));
+
 	app.use(bodyParser.json({limit: '50mb'}));
 	app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
-
-	app.use(CookieParser());
 
 	app.use(express.static(__dirname + '/public'));
 	app.set('view engine', 'ejs');

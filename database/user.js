@@ -91,7 +91,13 @@ module.exports = db = {
             else {
               req.session.username = result.username;
               req.session.userid = result._id;
-              res.status(200).send({status:'OK'});
+              req.session.save(function() {
+                if(req.session.username) {
+                  res.status(200).send({status:'OK'});
+                }else {
+                  res.status(200).send({status:'error', error:'/login: store cookie failed!'});
+                }
+              });
             }
           }
         }
