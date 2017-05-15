@@ -23,7 +23,7 @@ module.exports = tweetDB = {
         callback(err);
       }
       tweetCollection = tweetDB.collection('tweet');
-      tweetCollection.createIndex({postedBy: 1});
+      tweetCollection.createIndex({username: 1});
       tweetCollection.createIndex({content: "text"});
       tweetCollection.createIndex({timestamp: -1});
       tweetCollection.createIndex({parent:1});
@@ -97,7 +97,7 @@ module.exports = tweetDB = {
           res.status(400).send({status:'error', error:err});
         }
         if(result) {
-          query['postedBy'] = data.username;
+          query['username'] = data.username;
           let cursor = tweetCollection.find(query);
 
         if(data.rank === 'interest') {
@@ -117,7 +117,7 @@ module.exports = tweetDB = {
         }
       });
     } else if (data.following == false && data.username !== '') {
-      query['postedBy'] = data.username;
+      query['username'] = data.username;
       let cursor = tweetCollection.find(query);
 
       if(data.rank === 'interest') {
@@ -137,7 +137,7 @@ module.exports = tweetDB = {
           if(err) {
             res.status(400).send({status:'error', error:err});
           }else {
-            query['postedBy'] = {$in: result};
+            query['username'] = {$in: result};
             let cursor = tweetCollection.find(query);
             if(data.rank === 'interest') {
               cursor = cursor.sort({like:-1});

@@ -14,13 +14,13 @@ module.exports = {
 				parent = mongodb.ObjectId(req.body.parent);
 			}
 			var media = req.body.media;
-			var postedBy = req.session.username;
+			var username = req.session.username;
 			var newTweet = {
 				timestamp: parseInt((Date.now() / 1000).toFixed(0)),
 				content,
 				parent,
 				media,
-				postedBy,
+				username,
 				like: 0,
 				interest: (new Date()).getTime()
 			};
@@ -100,7 +100,7 @@ module.exports = {
 		var done = false;
 		var fields = {};
     fields.attachmentList = [];
-		
+
 		var boy = new Busboy({
 			headers: req.headers,
 			limits:{fields:50, fieldSize:40*1024, files:1, fileSize: 10*1024*1024, headerPairs:1}
