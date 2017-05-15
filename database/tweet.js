@@ -84,29 +84,92 @@ module.exports = tweetDB = {
       query = {$and : [{content:{$regex: data.q}}, {content: {$not: /^RT.*/}}]};
     }else if(data.q) {
       query['content'] = {$regex: data.q};
-    }else if(!replies) {
+    }else if(!data.replies) {
       query['content'] = {$not: /^RT.*/};
     }
     query['timestamp'] = {$lte : data.timestamp};
-    if(parent !== 'none') {
+    if(data.parent !== 'none') {
       query['parent'] = data.parent;
     }
 
-    if(following == true && data.username != '') {
+    if(data.following == true && data.username != '') {
       followCollection.findOne({follower: req.session.username, following: data.username}, function(err, result) {
         if(err) {
           res.status(400).send({status:'error', error:err});
         }
         if(result) {
+          query['postedBy'] = data.username;
+          let cursor = tweetCollection.find(query);
 
+        if(data.rank === 'interest') {
+          cursor = cursor.sort({like:-1});
+        }else {
+          cursor = cursor.sort({timestamp:-1});
+        }
+        cursor.limit(data.limit).toArray(function (err, array) {
+            if(err) {
+                res.status(400).send({status:'error', error:err});
+            }else{
+                res.status(200).send({status:'OK', items:array});
+            }
+        });
         }else {
           res.status(200).send({status:'OK', items:[]});
         }
       });
+    } else if (data.following == false && data.username != '') {
+      query['postedBy'] = data.username;
+      let cursor = tweetCollection.find(query);
+
+      if(data.rank === 'interest') {
+        cursor = cursor.sort({like:-1});
+      }else {
+        cursor = cursor.sort({timestamp:-1});
+      }
+      cursor.limit(data.limit).toArray(function (err, array) {
+        if(err) {
+            res.status(400).send({status:'error', error:err});
+        }else{
+            res.status(200).send({status:'OK', items:array});
+        }
+      });
+    } else if (data.following == true && data.username == '') {
+      followCollection.distinct("following", {follower: req.session.username}, function(err, result) {
+          if(err) {
+            res.status(400).send({status:'error', error:err});
+          }else {
+            query['postedBy'] = {$in: result};
+            let cursor = tweetCollection.find(query);
+            if(data.rank === 'interest') {
+              cursor = cursor.sort({like:-1});
+            }else {
+              cursor = cursor.sort({timestamp:-1});
+            }
+            cursor.limit(data.limit).toArray(function (err, array) {
+              if(err) {
+                  res.status(400).send({status:'error', error:err});
+              }else{
+                  res.status(200).send({status:'OK', items:array});
+              }
+            });
+          }
+      });
+    }else {
+      let cursor = tweetCollection.find(query);
+
+      if(data.rank === 'interest') {
+        cursor = cursor.sort({like:-1});
+      }else {
+        cursor = cursor.sort({timestamp:-1});
+      }
+      cursor.limit(data.limit).toArray(function (err, array) {
+        if(err) {
+            res.status(400).send({status:'error', error:err});
+        }else{
+            res.status(200).send({status:'OK', items:array});
+        }
+      });
     }
-
-
-
   },
   getMedia: function(data, res) {
     var cursor = bucket.find({_id:mongodb.ObjectID(data.id)}, {}).limit(1);

@@ -15,7 +15,7 @@ module.exports = {
 			parent = mongodb.ObjectId(req.body.parent);
 		}
     var media = req.body.media;
-    var postedBy = mongodb.ObjectId(req.session.userid);
+    var postedBy = req.session.username;
     var newTweet = {
       timestamp: new Date(),
       content,
@@ -64,7 +64,7 @@ module.exports = {
 		var parent = req.body.parent;
 		var replies = req.body.replies;
 
-		if(timestamp === undefined)
+		if(timestamp === undefined || timestamp === '')
 			timestamp = new Date();
 		else timestamp = new Date(timestamp);
 
@@ -74,7 +74,7 @@ module.exports = {
 			limit = MAX_ITEM_PAGESIZE;
 		}
 
-		if(following === undefined || follow === 'true')
+		if(following === undefined || following === 'true' || following === '')
 			following = true;
 		if(following === 'false')
 			following = false;
@@ -82,7 +82,7 @@ module.exports = {
 		if(rank === undefined || rank === '')
 			rank = 'interest';
 
-			if(replies === undefined || replies === 'true')
+			if(replies === undefined || replies === 'true' || replies === '')
 				replies = true;
 			if(replies === 'false')
 				replies = false;
