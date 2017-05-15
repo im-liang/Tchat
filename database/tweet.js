@@ -173,13 +173,17 @@ module.exports = tweetDB = {
   getMedia: function(data, res) {
     var cursor = bucket.find({_id:mongodb.ObjectID(data.id)}, {}).limit(1);
     cursor.next(function (err, doc) {
-        if(err) return res.status(400).send({status:'error', error:err});
-        if(doc == null) return res.status(400).send({status:'error', error:'file not found'});
+        if(err) {
+          res.status(400).send({status:'error', error:err});
+        }
+        if(doc == null) {
+          res.status(400).send({status:'error', error:'file not found'});
+        }
 
         var outStream = bucket.openDownloadStream(doc._id);
-        res.setHeader('Content-disposition', 'attachment; filename=' + doc.filename);
+        // res.setHeader('Content-disposition', 'attachment; filename=' + doc.filename);
         res.setHeader('Content-length', doc.length.toString());
-        res.setHeader('Content-Type', 'image/jpeg');
+        res.setHeader('Content-Type', 'image/png');
         outStream.pipe(res);
         cursor.close();
     });

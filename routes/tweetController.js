@@ -97,19 +97,23 @@ module.exports = {
 		tweetDB.getMedia({id: req.params.id}, res);
   },
   post_addMedia: function(req, res) {
+		var done = false;
+		var fields = {};
+    fields.attachmentList = [];
+		
 		var boy = new Busboy({
 			headers: req.headers,
 			limits:{fields:50, fieldSize:40*1024, files:1, fileSize: 10*1024*1024, headerPairs:1}
 		});
 		boy.on('file', function(fieldname, file, filename, encoding, mimetype) {
 			if(filename.length == 0) {
-				file.pipe(BlackHole());
 				res.status(400).send({status:'error', error:'file size is 0'});
+				return file.pipe(BlackHole());
 			}
 			var fileID = mongodb.ObjectID();
 			var uploadStream = tweetDB.getBucket().openUploadStreamWithId(fileID, filename, {metadata:{}, contentType:mimetype});
 			file.on('end', function () {
-				if(ended) console.error('HELL!!!');
+				if(done) console.error('HELL!!!');
 				fields.attachmentList.push({name:filename, id:fileID});
 			});
 			file.on('limit', function(){
@@ -117,13 +121,13 @@ module.exports = {
 				res.status(400).send({status:'error', error:'file size is too large'});
 			});
 			file.pipe(uploadStream).once('finish', function () {
-				if(ended) return tweetDB.getBucket().delete(fileID);
+				if(done) return tweetDB.getBucket().delete(fileID);
 				function dropFiles(){
 						for(var file of fields.attachmentList){
 								s.orderFileBucket.delete(file.id);
 						}
 						fields.attachmentList = [];
-						ended = true;
+						done = true;
 				}
 				console.log(fields.attachmentList[0].id);
 				res.send({status:'OK', id: fields.attachmentList[0].id});
