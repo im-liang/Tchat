@@ -140,7 +140,33 @@ module.exports = db = {
           if(!result) {
             res.status(200).send({status:'error', error:'/login: no such user!'});
           }else {
-            res.status(200).send({status:'OK'});
+            async.parallel({
+                one: function(callback) {
+                  followCollection.distinct("following", {follower: result.username}, function(err, result) {
+                      if(err) {
+                        callback(err);
+                      }else {
+                        callback(null, result);
+                      }
+                  });
+                },
+                two: function(callback) {
+                  followCollection.distinct("follower", {following: result.username}, function(err, result) {
+                      if(err) {
+                        callback(err);
+                      }else {
+                        callback(null, result);
+                      }
+                  });
+                }
+            }, function(err, results) {
+                // results is now equals to: {one: 1, two: 2}
+                if(err) {
+                  res.status(400).send({status:'error', error:err});
+                }else {
+                  res.status(200).send({status:'OK', user: {email:result.email, following: results.one.length, followers:results.two.length}});
+                }
+            });
           }
         }
       });
