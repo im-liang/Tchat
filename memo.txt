@@ -10,3 +10,7 @@ sudo apt-get update
 sudo apt-get install nginx
 
 sudo npm install pm2 -g
+
+sudo bash -c 'node server.js > log.txt'
+clear log:
+sudo bash -c "echo  > project_profiler.log"
