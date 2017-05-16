@@ -7,8 +7,8 @@ module.exports = {
 	post_additem: function(req, res){
 		console.log('/addTweet');
 		console.log(req.body);
-		if(!req.session.username){
-			res.send({status: 'error', error: req.session.username +' is not logged in. Permission denied.'});
+		if(!req.cookies.username){
+			res.send({status: 'error', error: req.cookies.username +' is not logged in. Permission denied.'});
 		}else {
 			var content = req.body.content;
 			var parent = req.body.parent;
@@ -16,7 +16,7 @@ module.exports = {
 				parent = mongodb.ObjectId(req.body.parent);
 			}
 			var media = req.body.media;
-			var username = req.session.username;
+			var username = req.cookies.username;
 			var newTweet = {
 				timestamp: parseInt((Date.now() / 1000).toFixed(0)),
 				content,
@@ -44,7 +44,7 @@ module.exports = {
 	},
 	post_likeitem: function(req, res) {
 		var like = req.body.like;
-		userid = req.session.userid;
+		userid = req.cookies.userid;
 		if(like === undefined || like === true || like === 'true') {
 			like = 1;
 		}else {

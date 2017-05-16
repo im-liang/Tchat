@@ -89,15 +89,9 @@ module.exports = db = {
               res.status(200).send({status:'error', error:'/login: password failed!'});
             }
             else {
-              req.session.username = result.username;
-              req.session.userid = result._id;
-              req.session.save(function() {
-                if(req.session.username) {
-                  res.status(200).send({status:'OK'});
-                }else {
-                  res.status(200).send({status:'error', error:'/login: store cookie failed!'});
-                }
-              });
+              res.cookie('username', result.username);
+              res.cookie('userid', result._id);
+              res.status(200).send({status:'OK'});
             }
           }
         }
@@ -173,7 +167,7 @@ module.exports = db = {
     },
     follow: function(data, req, res) {
       if(data.follow) {
-        followCollection.insertOne({following:data.username, follower: req.session.username}, function(err, result) {
+        followCollection.insertOne({following:data.username, follower: req.cookies.username}, function(err, result) {
           if(err) {
             res.status(400).send({status:'error', error:err});
           }else {
@@ -181,7 +175,7 @@ module.exports = db = {
           }
         });
       }else {
-        followCollection.deleteMany({following:data.username, follower: req.session.username}, function(err, result) {
+        followCollection.deleteMany({following:data.username, follower: req.cookies.username}, function(err, result) {
           if(err) {
             res.status(400).send({status:'error', error:err});
           }else {

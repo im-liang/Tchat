@@ -6,7 +6,7 @@ var followCtrl = require('./followController');
 var router = express.Router();
 
 router.get('/', function(req, res) {
-	if(req.session.username) {
+	if(req.cookies.username) {
 		res.render('main.ejs');
 	} else {
 		res.render('login.ejs');

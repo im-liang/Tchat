@@ -22,13 +22,9 @@ module.exports = {
         userDB.loginUser({username: username, password:password}, req, res);
     },
     post_logout: function(req, res) {
-        req.session.destroy(function(err) {
-            if (err) {
-                res.send({status: 'error'});
-            } else {
-                res.send({status: 'OK'});
-            }
-        });
+      res.clearCookie('username');
+      res.clearCookie('userid');
+      res.send({status: 'OK'});
     },
     post_verify: function(req, res) {
         var key = req.body.key;

@@ -99,7 +99,7 @@ module.exports = tweetDB = {
       query['parent'] = data.parent;
     }
     if(data.following == true && data.username != '') {
-      followCollection.findOne({follower: req.session.username, following: data.username}, function(err, result) {
+      followCollection.findOne({follower: req.cookies.username, following: data.username}, function(err, result) {
         if(err) {
           res.status(400).send({status:'error', error:err});
         }
@@ -146,7 +146,7 @@ module.exports = tweetDB = {
         }
       });
     } else if (data.following == true && data.username == '') {
-      followCollection.distinct("following", {follower: req.session.username}, function(err, result) {
+      followCollection.distinct("following", {follower: req.cookies.username}, function(err, result) {
           if(err) {
             res.status(400).send({status:'error', error:err});
           }else {

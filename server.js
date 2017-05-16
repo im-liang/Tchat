@@ -31,11 +31,11 @@ if (cluster.isMaster) {
 
 	app.use(CookieParser());
 
-  app.use(session( { secret: 'team ysjl',
-			   cookie: { secure: false, maxAge: null },
-			   saveUninitialized: false,
-			   resave: false }
-			));
+  // app.use(session( { secret: 'team ysjl',
+	// 		   cookie: { secure: false, maxAge: null },
+	// 		   saveUninitialized: false,
+	// 		   resave: false }
+	// 		));
 
 	app.use(bodyParser.json({limit: '50mb'}));
 	app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
