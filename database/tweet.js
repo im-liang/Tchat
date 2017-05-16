@@ -55,8 +55,12 @@ module.exports = tweetDB = {
       if(err) {
         res.status(400).send({status: 'error', error: err});
       }else {
-        result.id = mongodb.ObjectId(data.id);
-        res.status(200).send({status: 'OK', item: result});
+        if(result) {
+          result.id = mongodb.ObjectId(data.id);
+          res.status(200).send({status: 'OK', item: result});
+        }else {
+          res.status(200).send({status: 'OK', item: result});
+        }
       }
     });
   },
