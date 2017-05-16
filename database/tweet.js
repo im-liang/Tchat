@@ -51,19 +51,17 @@ module.exports = tweetDB = {
     });
   },
   getTweet: function(data, res) {
-    var id = mongodb.ObjectId(data.id);
-    tweetCollection.findOne({_id: id}, function (err, result) {
+    tweetCollection.findOne({_id: mongodb.ObjectId(data.id)}, function (err, result) {
       if(err) {
         res.status(400).send({status: 'error', error: err});
       }else {
-        result.id = id;
+        result.id = mongodb.ObjectId(data.id);
         res.status(200).send({status: 'OK', item: result});
       }
     });
   },
   deleteTweet: function(data, res) {
-    var id = mongodb.ObjectId(data.id);
-    tweetCollection.findOne({_id: id}, function (err, result) {
+    tweetCollection.findOne({_id: mongodb.ObjectId(data.id)}, function (err, result) {
       if(err) {
         res.status(400).send({status: 'error', error: err});
       }else {
@@ -72,7 +70,7 @@ module.exports = tweetDB = {
             bucket.delete(mongodb.ObjectID(file));
           });
         }
-        tweetCollection.deleteMany({_id: id}, function(error, found) {
+        tweetCollection.deleteMany({_id: mongodb.ObjectId(data.id)}, function(error, found) {
           if(error) {
             res.status(400).send({status: 'error', error: error});
           }else {
