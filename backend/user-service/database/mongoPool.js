@@ -1,5 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
-const url = require("../config.json")["MongoDBURL"]
+const url = require("../config/config.json").db.mongodbUrl;
 
 const option = {
   db:{
