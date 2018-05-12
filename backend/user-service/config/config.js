@@ -3,6 +3,7 @@ const path = require('path');
 const handlebars = require('handlebars');
 const nodemailer = require('nodemailer');
 const smtpTransport = require('nodemailer-smtp-transport');
+const cryptoJS = require("crypto-js");
 const settings = require("./config.json");
 
 emailTransporter = nodemailer.createTransport(smtpTransport({
@@ -23,7 +24,8 @@ function sendEmail(email, key) {
             } else {
                 let template = handlebars.compile(html);
                 let replacements = {
-                    ip: settings.ip,
+                    domain: settings.domain,
+                    email: email,
                     key: key
                 };
                 let htmlToSend = template(replacements);
@@ -44,7 +46,18 @@ function sendEmail(email, key) {
     })
 }
 
+function encryptString(message) {
+    return cryptoJS.AES.encrypt(message, settings.secret).toString();
+}
+
+function decryptString(code) {
+    let bytes = cryptoJS.AES.decrypt(code, settings.secret);
+    return bytes.toString(cryptoJS.enc.Utf8);
+}
+
 module.exports = {
     emailTransporter,
-    sendEmail
+    sendEmail,
+    encryptString,
+    decryptString
 }

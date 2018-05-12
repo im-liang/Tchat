@@ -1,40 +1,11 @@
 const uuidv1 = require('uuid/v1');
 const MongoPool = require("./mongoPool");
-
-function findUserByUsername(username) {
-    return new Promise(function(resolve, reject) {
-        MongoPool.getInstance(function(db) {
-            db.db('tchat').collection('user').findOne({
-                username: username
-            }, function(err, result) {
-                if (err) {
-                    reject(new Error('database error'));
-                }
-                resolve(result);
-            });
-        });
-    });
-}
-
-function findUserByEmail(email) {
-    return new Promise(function(resolve, reject) {
-        MongoPool.getInstance(function(db) {
-            db.db('tchat').collection('user').findOne({
-                email: email
-            }, function(err, result) {
-                if (err) {
-                    reject(new Error('database error'));
-                }
-                resolve(result);
-            });
-        });
-    });
-}
+const settings = require("../config/config.json");
 
 function checkUserNotExist(username, email) {
     return new Promise(function(resolve, reject) {
         MongoPool.getInstance(function(db) {
-            db.db('tchat').collection('user').findOne({
+            db.db(settings.db.database).collection(settings.db.userCollection).findOne({
                 "$or": [{
                     "username": username
                 }, {
@@ -57,7 +28,7 @@ function checkUserNotExist(username, email) {
 function insertUser(username, email, password) {
     return new Promise(function(resolve, reject) {
         MongoPool.getInstance(function(db) {
-            db.db('tchat').collection('user').insertOne({
+            db.db(settings.db.database).collection(settings.db.userCollection).insertOne({
                 username: username,
                 email: email,
                 password: password,
@@ -85,9 +56,29 @@ function addUser(username, email, password) {
 };
 
 function findUser(account) {
-    findUserByUsername(account)
+    return new Promise(function(resolve, reject) {
+        MongoPool.getInstance(function(db) {
+            db.db(settings.db.database).collection(settings.db.userCollection).findOne({
+                "$or": [{
+                    "username": account
+                }, {
+                    "email": account
+                }]
+            }, function(err, result) {
+                if (err) {
+                    reject(new Error('database error'));
+                }
+                if (result === null) {
+                    reject(new Error('no such user'));
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+    });
 }
 
 module.exports = {
-    addUser
+    addUser,
+    findUser
 }
