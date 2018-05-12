@@ -1,12 +1,21 @@
 {
-  "ip": "127.0.0.1",
-  "db": {
-    "mongodbUrl": "mongodb://localhost:27017/tchat"
-  },
-  "email": {
-    "user": "cse308.liang.jie@gmail.com",
-    "password": "//Recursion0",
-    "subject": "Tchat: Verify Your Email"
-  }
+    "domain": "127.0.0.1:3000",
+    "ip": "127.0.0.1",
+    "port": 3000,
+    "secret": "recursion",
+    "db": {
+        "mongodbUrl": "mongodb://localhost:27017/tchat",
+        "database": "tchat",
+        "userCollection": "user"
+    },
+    "email": {
+        "user": "cse308.liang.jie@gmail.com",
+        "password": "//Recursion0",
+        "subject": "Tchat: Verify Your Email"
+    },
+    "rabbitmq": {
+        "server": "amqp://localhost",
+        "queue": "user"
+    }
 
 }
