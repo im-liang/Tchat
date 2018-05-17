@@ -1,0 +1,68 @@
+.loginContainer {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #38A1F3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginContainer form {
+  width: 30%;
+  min-width: 250px;
+}
+
+.group {
+  position:relative;
+  margin-bottom:45px;
+}
+
+label {
+  position: absolute;
+  pointer-events:none;
+  top: 0;
+  font-size: 20px;
+  margin: 10px;
+  padding: 0 10px;
+  background-color: #38A1F3;
+  color: white;
+  -webkit-transition: top .2s ease-in-out, font-size .2s ease-in-out;
+  transition: top .2s ease-in-out, font-size .2s ease-in-out;
+}
+
+input {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid white;
+  font-size: 20px;
+  background-color: #38A1F3;
+  color: white;
+}
+
+input:focus {
+  outline: none;
+}
+
+input:focus + label {
+  top: -25px;
+  font-size: 20px;
+}
+
+.loginContainer form button {
+  width: 100%;
+  background-color: white;
+  color: #38A1F3;
+  border-radius: 30px;
+  padding: 5px;
+  margin-left: 15px;
+  font-size: 20px;
+}
+
+.registerButton {
+  margin: 10px;
+}
